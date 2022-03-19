@@ -38,3 +38,8 @@ alias nw="cd ~/vimwiki && nvim index.md -c VenterToggle"
 alias lg='lazygit'
 alias wthr='curl wttr.in'
 alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  exec tmux
+fi
+
