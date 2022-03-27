@@ -1,0 +1,41 @@
+# zsh
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
+# git
+alias gs='git status'
+alias ga='git add'
+alias gp='git push'
+alias gpo='git push origin'
+alias gtd='git tag --delete'
+alias gtdr='git tag --delete origin'
+alias gr='git branch -r'
+alias gplo='git pull origin'
+alias gb='git branch '
+alias gc='git commit'
+alias gd='git diff'
+alias gco='git checkout '
+alias gl='git log'
+alias gr='git remote'
+alias grs='git remote show'
+alias glo='git log --pretty="oneline"'
+alias glol='git log --graph --oneline --decorate'
+
+# ls
+alias ls='ls --color=auto'
+alias lsl='ls -l'
+alias ll='ls -lahF'
+alias lls='ls -lahFtr'
+alias la='ls -A'
+alias l='ls -CF'
+
+# utils
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -i'
+
+# other
+alias nw="cd ~/vimwiki && nvim index.md -c VenterToggle"
+alias lg='lazygit'
+alias wthr='curl wttr.in'
+alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
