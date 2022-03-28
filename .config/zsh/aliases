@@ -24,7 +24,7 @@ alias glol='git log --graph --oneline --decorate'
 # ls
 alias ls='ls --color=auto'
 alias lsl='ls -l'
-alias ll='ls -lahF'
+alias ll='ls -lah'
 alias lls='ls -lahFtr'
 alias la='ls -A'
 alias l='ls -CF'
