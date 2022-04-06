@@ -8,7 +8,7 @@ export SAVEHIST=10000
 export EDITOR="nvim"
 export VISUAL="nvim"
 
-# Haskell environment
+# Haskell
 [ -f "/home/jacob/.ghcup/env" ] && source "/home/jacob/.ghcup/env"
+# Rust
 [ -d "/home/jacob/.cargo/bin" ] && export PATH="$PATH:/home/jacob/.cargo/bin"
-# export PATH=$PATH:/home/jacob/.cargo/bin
