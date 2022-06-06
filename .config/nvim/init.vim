@@ -1,5 +1,3 @@
-" TODO: Add global status line (https://github.com/neovim/neovim/pull/17266)
-
 set noshowmatch
 set relativenumber
 set nohlsearch
@@ -89,8 +87,6 @@ nnoremap N Nzzzv
 " Include relative jumps in jumplist for <C-o>
 nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'gk'
 nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'gj'
-
-" lua require('impatient')
 
 " Plugins
 runtime ./plug.vim

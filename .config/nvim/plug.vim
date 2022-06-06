@@ -4,9 +4,6 @@ endif
 
 call plug#begin()
 
-" Cache lua plugins
-Plug 'lewis6991/impatient.nvim'
-
 " Autopairs
 Plug 'windwp/nvim-autopairs'
 
