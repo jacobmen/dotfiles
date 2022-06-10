@@ -1,6 +1,4 @@
 #! /usr/bin/env bash
-set -euxo pipefail
-
 git clone --bare https://github.com/jacobmen/dotfiles.git $HOME/.dotfiles
 
 function config {
