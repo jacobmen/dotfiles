@@ -10,7 +10,7 @@ Plug 'rmagatti/auto-session'
 Plug 'windwp/nvim-autopairs'
 
 " Comments
-Plug 'tpope/vim-commentary'
+Plug 'numToStr/Comment.nvim'
 
 " Doc generation
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install() } }
@@ -37,6 +37,9 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'rafamadriz/friendly-snippets'
+
+" Registers
+Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
 
 " Telescope
 Plug 'nvim-lua/plenary.nvim'
