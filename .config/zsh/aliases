@@ -5,11 +5,11 @@ for index ({1..9}) alias "$index"="cd +${index}"; unset index
 # git
 alias gs='git status'
 alias ga='git add'
+alias gr='git restore'
 alias gp='git push'
 alias gpo='git push origin'
 alias gtd='git tag --delete'
 alias gtdr='git tag --delete origin'
-alias gr='git branch -r'
 alias gP='git pull'
 alias gplo='git pull origin'
 alias gb='git branch '
