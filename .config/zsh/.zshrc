@@ -11,6 +11,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 autoload -U compinit; compinit
 
 fpath+=$ZDOTDIR/pure
+export PATH=/home/jacob/.local/bin:$PATH
 zstyle :prompt:pure:path color cyan
 autoload -U promptinit; promptinit
 prompt pure
