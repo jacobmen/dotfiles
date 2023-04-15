@@ -7,6 +7,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 mason_lsp.setup({
     ensure_installed = {
         "clangd",
+        "pyright",
         "rust_analyzer",
         "texlab",
         "tsserver",
