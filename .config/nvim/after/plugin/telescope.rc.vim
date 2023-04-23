@@ -11,6 +11,11 @@ local telescope = require('telescope')
 local trouble = require("trouble.providers.telescope")
 
 telescope.setup {
+    pickers = {
+        find_files = {
+            hidden = true,
+        },
+    },
     defaults = {
         mappings = {
             i = {
@@ -23,6 +28,10 @@ telescope.setup {
                 ["<c-t>"] = trouble.open_with_trouble,
             },
         },
+        file_ignore_patterns = {
+            "^.git/"
+        },
+        vimgrep_arguments = { 'rg', '--hidden', '--color=never', '--no-heading', '--with-filename', '--line-number', '--column', '--smart-case' },
     },
 }
 
