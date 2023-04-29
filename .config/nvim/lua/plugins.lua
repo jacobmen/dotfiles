@@ -1,5 +1,12 @@
 return {
     "folke/lazy.nvim",
+    {
+        "christoomey/vim-tmux-navigator",
+        lazy = false,
+        config = function()
+            vim.g.tmux_navigator_no_wrap = 1
+        end,
+    },
     "rmagatti/auto-session",
     "windwp/nvim-autopairs",
     "numToStr/Comment.nvim",
