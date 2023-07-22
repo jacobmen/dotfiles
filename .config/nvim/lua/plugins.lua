@@ -123,4 +123,10 @@ return {
             mappings = "<leader>gy",
         },
     },
+    {
+        "tzachar/highlight-undo.nvim",
+        opts = {
+            duration = 200,
+        },
+    },
 }
