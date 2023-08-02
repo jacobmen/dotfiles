@@ -22,6 +22,7 @@ return {
                 { noremap = true, silent = true }
             )
         end,
+        keys = "<Leader>d",
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             "L3MON4D3/LuaSnip",
@@ -128,5 +129,8 @@ return {
         opts = {
             duration = 200,
         },
+    },
+    {
+        "folke/neodev.nvim",
     },
 }

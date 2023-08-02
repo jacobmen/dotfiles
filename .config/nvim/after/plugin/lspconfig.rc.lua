@@ -1,4 +1,5 @@
 require("mason").setup()
+require("neodev").setup()
 
 local nvim_lsp = require("lspconfig")
 local mason_lsp = require("mason-lspconfig")
@@ -7,6 +8,7 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 mason_lsp.setup({
     ensure_installed = {
         "clangd",
+        "lua_ls",
         "pyright",
         "rust_analyzer",
         "texlab",
