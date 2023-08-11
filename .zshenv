@@ -9,6 +9,6 @@ export EDITOR="nvim"
 export VISUAL="nvim"
 
 # Haskell
-[ -f "/home/jacob/.ghcup/env" ] && source "/home/jacob/.ghcup/env"
+[ -f "~/.ghcup/env" ] && source "~/.ghcup/env"
 # Rust
-[ -d "/home/jacob/.cargo/bin" ] && export PATH="$PATH:/home/jacob/.cargo/bin"
+[ -d "~/.cargo/bin" ] && export PATH="$PATH:~/.cargo/bin"
