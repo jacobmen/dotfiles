@@ -36,6 +36,11 @@ source $ZDOTDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZDOTDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/.fzf.zsh
 
+# Haskell
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
+# Rust
+[ -d "$HOME/.cargo/bin" ] && export PATH="$PATH:$HOME/.cargo/bin"
+
 # Autostart tmux (https://unix.stackexchange.com/a/113768)
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   exec tmux
