@@ -7,8 +7,46 @@ return {
             vim.g.tmux_navigator_no_wrap = 1
         end,
     },
-    "rmagatti/auto-session",
-    "windwp/nvim-autopairs",
+    {
+        "rmagatti/auto-session",
+        config = function()
+            require("auto-session").setup({
+                log_level = "error",
+                auto_session_enabled = true,
+                auto_session_enable_last_session = false,
+                auto_session_root_dir = vim.fn.stdpath("data") .. "/sessions/",
+                auto_session_last_session_dir = "",
+            })
+            vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+        end,
+    },
+    {
+        "windwp/nvim-autopairs",
+        config = function()
+            local autopairs = require("nvim-autopairs")
+            autopairs.setup({
+                disable_filetype = { "TelescopePrompt", "vim" },
+            })
+
+            local rule = require("nvim-autopairs.rule")
+            local cond = require("nvim-autopairs.conds")
+
+            autopairs.add_rules({
+                rule("$", "$", { "tex", "latex" })
+                    -- Move over $ if next character
+                    :with_move(function(opts)
+                        return opts.next_char == opts.char
+                    end)
+                    -- Don't insert pair if previous character escapes $
+                    :with_pair(
+                        cond.not_before_regex("\\", 1)
+                    ),
+                rule("\\[", "\\]", { "tex", "latex" })
+                    -- don't move right when character repeated
+                    :with_move(cond.none()),
+            })
+        end,
+    },
     {
         "numToStr/Comment.nvim",
         opts = {
@@ -18,16 +56,18 @@ return {
     -- Doc generation (<leader>d)
     {
         "danymat/neogen",
-        config = function()
-            require("neogen").setup({ snippet_engine = "luasnip" })
-            vim.api.nvim_set_keymap(
-                "n",
-                "<Leader>d",
+        opts = {
+            snippet_engine = "luasnip",
+        },
+        keys = {
+            {
+                "<leader>d",
                 ":lua require('neogen').generate()<CR>",
-                { noremap = true, silent = true }
-            )
-        end,
-        keys = "<Leader>d",
+                mode = "n",
+                noremap = true,
+                silent = true,
+            },
+        },
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             "L3MON4D3/LuaSnip",
@@ -36,20 +76,69 @@ return {
     },
     {
         "mbbill/undotree",
-        config = function()
-            vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { silent = true })
-        end,
+        keys = {
+            { "<leader>u", ":UndotreeToggle<CR>", mode = "n", silent = true },
+        },
     },
-    -- Center buffer (<leader>v)
     {
         "jmckiern/vim-venter",
+        keys = {
+            { "<leader>v", ":VenterToggle<CR>", mode = "n", silent = true },
+        },
+    },
+    {
+        "lewis6991/gitsigns.nvim",
+        opts = {},
+    },
+    "neovim/nvim-lspconfig",
+    {
+        "tami5/lspsaga.nvim",
+        lazy = false,
         config = function()
-            vim.keymap.set("n", "<leader>v", ":VenterToggle<CR>", { silent = true })
+            require("lspsaga").init_lsp_saga({
+                debug = false,
+                use_saga_diagnostic_sign = true,
+                -- diagnostic sign
+                error_sign = "",
+                warn_sign = "",
+                hint_sign = "",
+                infor_sign = "",
+                diagnostic_header_icon = "",
+                -- code action title icon
+                code_action_icon = "〉",
+                code_action_prompt = {
+                    enable = false,
+                    sign = true,
+                    sign_priority = 40,
+                    virtual_text = true,
+                },
+                finder_definition_icon = "",
+                finder_reference_icon = "",
+                max_preview_lines = 10,
+                finder_action_keys = {
+                    open = "<CR>",
+                    vsplit = "<C-v>",
+                    split = "<C-S>",
+                    quit = "<C-c>",
+                    scroll_down = "<C-f>",
+                    scroll_up = "<C-b>",
+                },
+                code_action_keys = {
+                    quit = "<C-c>",
+                    exec = "<CR>",
+                },
+                rename_action_keys = {
+                    quit = "<C-c>",
+                    exec = "<CR>",
+                },
+                definition_preview_icon = "",
+                border_style = "single",
+                rename_prompt_prefix = "➤",
+                server_filetype_map = {},
+                diagnostic_prefix_format = "%d. ",
+            })
         end,
     },
-    "lewis6991/gitsigns.nvim",
-    "neovim/nvim-lspconfig",
-    "tami5/lspsaga.nvim",
     {
         "hrsh7th/cmp-nvim-lsp",
         dependencies = {
@@ -89,9 +178,123 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
+        main = "nvim-treesitter.configs",
+        opts = {
+            highlight = {
+                enable = true,
+                disable = {},
+            },
+            indent = {
+                enable = false,
+                disable = {},
+            },
+            incremental_selection = {
+                enable = true,
+                keymaps = {
+                    init_selection = "<CR>",
+                    scope_incremental = "<CR>",
+                    node_incremental = "<TAB>",
+                    node_decremental = "<S-TAB>",
+                },
+            },
+            ensure_installed = {
+                "bash",
+                "c",
+                "cpp",
+                "css",
+                "diff",
+                "dockerfile",
+                "git_config",
+                "git_rebase",
+                "gitattributes",
+                "gitcommit",
+                "gitignore",
+                "html",
+                "javascript",
+                "json",
+                "latex",
+                "lua",
+                "make",
+                "markdown",
+                "python",
+                "rust",
+                "toml",
+                "typescript",
+                "haskell",
+                "vim",
+                "vimdoc",
+                "yaml",
+            },
+        },
     },
-    "folke/trouble.nvim",
-    "nvim-lualine/lualine.nvim",
+    {
+        "folke/trouble.nvim",
+        opts = {
+            icons = false,
+            fold_open = "v", -- icon used for open folds
+            fold_closed = ">", -- icon used for closed folds
+            indent_lines = false, -- add an indent guide below the fold icons
+            padding = false,
+            action_keys = {
+                cancel = "<c-c>", -- cancel the preview and get back to last window / buffer / cursor
+            },
+            signs = {
+                -- icons / text used for a diagnostic
+                error = "E",
+                warning = "W",
+                hint = "H",
+                information = "I",
+            },
+            use_diagnostic_signs = false,
+        },
+        keys = {
+            { "<leader>xx", ":TroubleToggle<cr>", mode = "n", noremap = true, silent = true },
+            { "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>", mode = "n", noremap = true, silent = true },
+            { "<leader>xt", "<cmd>Trouble telescope<cr>", mode = "n", noremap = true, silent = true },
+        },
+    },
+    {
+        "nvim-lualine/lualine.nvim",
+        opts = {
+            options = {
+                icons_enabled = false,
+                theme = "gruvbox",
+                component_separators = { left = "", right = "" },
+                section_separators = { left = "", right = "" },
+                disabled_filetypes = {},
+                always_divide_middle = true,
+            },
+            sections = {
+                lualine_a = { "mode" },
+                lualine_b = { "branch", "diff", { "diagnostics", sources = { "nvim_diagnostic" } } },
+                lualine_c = {
+                    {
+                        "filename",
+                        -- displays file status (readonly status, modified status)
+                        file_status = true,
+                        -- 0 = just filename, 1 = relative path, 2 = absolute path
+                        path = 1,
+                    },
+                },
+                lualine_x = {
+                    "encoding",
+                    "filetype",
+                },
+                lualine_y = { "progress" },
+                lualine_z = { "location" },
+            },
+            inactive_sections = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = { "filename" },
+                lualine_x = { "location" },
+                lualine_y = {},
+                lualine_z = {},
+            },
+            tabline = {},
+            extensions = {},
+        },
+    },
     -- Colorscheme
     {
         "gruvbox-community/gruvbox",
@@ -125,7 +328,7 @@ return {
             },
         },
         keys = {
-            { "<C-w>o", "<Cmd>WindowsMaximize<CR>" },
+            { "<C-w>o", "<Cmd>WindowsMaximize<CR>", mode = "n" },
         },
     },
     "williamboman/mason.nvim",
