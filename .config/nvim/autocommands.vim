@@ -6,11 +6,6 @@ endfun
 
 autocmd BufWritePre * :call TrimWhitespace()
 
-augroup highlight_yank
-    autocmd!
-    au TextYankPost * silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=200})
-augroup END
-
 " Turn off auto-inserting comments
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 

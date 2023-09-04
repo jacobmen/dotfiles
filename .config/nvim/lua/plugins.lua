@@ -133,4 +133,15 @@ return {
     {
         "folke/neodev.nvim",
     },
+    {
+        "ibhagwan/smartyank.nvim",
+        opts = {
+            highlight = {
+                timeout = 200,
+            },
+            clipboard = {
+                enabled = false,
+            },
+        },
+    },
 }
