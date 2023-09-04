@@ -9,7 +9,12 @@ return {
     },
     "rmagatti/auto-session",
     "windwp/nvim-autopairs",
-    "numToStr/Comment.nvim",
+    {
+        "numToStr/Comment.nvim",
+        opts = {
+            ignore = "^$", -- ignore empty lines
+        },
+    },
     -- Doc generation (<leader>d)
     {
         "danymat/neogen",
@@ -29,10 +34,19 @@ return {
         },
         version = "*",
     },
-    -- Undo Tree (<leader>u)
-    "mbbill/undotree",
+    {
+        "mbbill/undotree",
+        config = function()
+            vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { silent = true })
+        end,
+    },
     -- Center buffer (<leader>v)
-    "jmckiern/vim-venter",
+    {
+        "jmckiern/vim-venter",
+        config = function()
+            vim.keymap.set("n", "<leader>v", ":VenterToggle<CR>", { silent = true })
+        end,
+    },
     "lewis6991/gitsigns.nvim",
     "neovim/nvim-lspconfig",
     "tami5/lspsaga.nvim",
@@ -102,6 +116,17 @@ return {
     {
         "anuvyklack/windows.nvim",
         dependencies = "anuvyklack/middleclass",
+        opts = {
+            autowidth = {
+                enable = false,
+            },
+            animation = {
+                enable = false,
+            },
+        },
+        keys = {
+            { "<C-w>o", "<Cmd>WindowsMaximize<CR>" },
+        },
     },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",

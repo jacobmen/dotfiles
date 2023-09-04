@@ -52,7 +52,7 @@ vim.keymap.set("", "<C-k>", "<C-w>k")
 vim.keymap.set("", "<C-l>", "<C-w>l")
 
 vim.g.loaded_matchparen = 1
-vim.keymap.set("n", "<Space", "<NOP>")
+vim.keymap.set("n", "<Space>", "<NOP>")
 vim.g.mapleader = " "
 
 -- Replace highlighted
@@ -87,13 +87,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 require("lazy").setup("plugins")
 
--- Mappings
-vim.keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { silent = true })
-vim.keymap.set("n", "<leader>v", ":VenterToggle<CR>", { silent = true })
-
 vim.cmd([[
     runtime ./autocommands.vim
-    runtime ./colors.vim
     " Plugin options
     let g:vimwiki_list = [{'path': '~/vimwiki/',
                           \ 'syntax': 'markdown', 'ext': '.md'}]
