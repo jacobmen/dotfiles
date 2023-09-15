@@ -302,7 +302,7 @@ return {
         priority = 1000,
         config = function()
             vim.cmd([[
-                let g:gruvbox_contrast_dark = 'hard'
+                let g:gruvbox_contrast_dark = 'medium'
                 if exists('+termguicolors')
                     let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
                     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -371,5 +371,32 @@ return {
                 enabled = false,
             },
         },
+    },
+    {
+        "j-hui/fidget.nvim",
+        tag = "legacy",
+        event = "LspAttach",
+        opts = {},
+    },
+    {
+        "RRethy/vim-illuminate",
+        config = function()
+            require("illuminate").configure({
+                filetypes_denylist = {
+                    "dirvish",
+                    "fugitive",
+                    "TelescopePrompt",
+                },
+            })
+        end,
+    },
+    {
+        -- add surrounding: ys{motion}{char}
+        -- change surrounding: cs{target}{replacement}
+        -- delete surrounding: ds[char]
+        "kylechui/nvim-surround",
+        version = "*",
+        event = "VeryLazy",
+        opts = {},
     },
 }

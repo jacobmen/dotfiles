@@ -21,7 +21,7 @@ mason_lsp.setup_handlers({
     function(server_name)
         nvim_lsp[server_name].setup({
             on_attach = require("lsp_utils").on_attach,
-            capabilities = capabilities,
+            capabilities = server_name == "clangd" and { offsetEncoding = "utf-8" } or capabilities,
         })
     end,
 })
