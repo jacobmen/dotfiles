@@ -229,23 +229,12 @@ return {
     },
     {
         "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
         opts = {
-            icons = false,
-            fold_open = "v", -- icon used for open folds
-            fold_closed = ">", -- icon used for closed folds
-            indent_lines = false, -- add an indent guide below the fold icons
             padding = false,
             action_keys = {
                 cancel = "<c-c>", -- cancel the preview and get back to last window / buffer / cursor
             },
-            signs = {
-                -- icons / text used for a diagnostic
-                error = "E",
-                warning = "W",
-                hint = "H",
-                information = "I",
-            },
-            use_diagnostic_signs = false,
         },
         keys = {
             { "<leader>xx", ":TroubleToggle<cr>", mode = "n", noremap = true, silent = true },
