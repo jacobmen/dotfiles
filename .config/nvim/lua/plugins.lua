@@ -182,11 +182,9 @@ return {
         opts = {
             highlight = {
                 enable = true,
-                disable = {},
             },
             indent = {
                 enable = false,
-                disable = {},
             },
             incremental_selection = {
                 enable = true,
@@ -248,9 +246,6 @@ return {
             options = {
                 icons_enabled = false,
                 theme = "gruvbox",
-                component_separators = { left = "", right = "" },
-                section_separators = { left = "", right = "" },
-                disabled_filetypes = {},
                 always_divide_middle = true,
             },
             sections = {
@@ -295,6 +290,7 @@ return {
                     comments = false,
                     operators = false,
                     folds = false,
+                    emphasis = false,
                 },
             })
             vim.o.background = "dark"
