@@ -23,7 +23,7 @@ function lsp_utils.on_attach(client, bufnr)
     vim.keymap.set("n", "<leader>gr", "<cmd>Lspsaga lsp_finder<CR>", opts)
     vim.keymap.set("n", "<leader>f", function()
         vim.lsp.buf.format({ async = true })
-    end, bufopts)
+    end, opts)
 
     vim.keymap.set("n", "<leader>gn", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
     vim.keymap.set("n", "<leader>gN", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)

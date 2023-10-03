@@ -1,5 +1,10 @@
 return {
-    "folke/lazy.nvim",
+    {
+        "folke/lazy.nvim",
+        defaults = {
+            lazy = true,
+        },
+    },
     {
         "christoomey/vim-tmux-navigator",
         lazy = false,
@@ -382,4 +387,5 @@ return {
         event = "VeryLazy",
         opts = {},
     },
+    "romainl/vim-cool",
 }
