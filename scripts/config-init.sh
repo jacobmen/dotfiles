@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 git clone --bare https://github.com/jacobmen/dotfiles.git "$HOME/.dotfiles"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
 function config {
    git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
