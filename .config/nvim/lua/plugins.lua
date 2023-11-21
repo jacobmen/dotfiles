@@ -249,7 +249,7 @@ return {
         "nvim-lualine/lualine.nvim",
         opts = {
             options = {
-                icons_enabled = false,
+                icons_enabled = true,
                 theme = "gruvbox",
                 always_divide_middle = true,
             },
@@ -362,8 +362,6 @@ return {
     },
     {
         "j-hui/fidget.nvim",
-        tag = "legacy",
-        event = "LspAttach",
         opts = {},
     },
     {
@@ -387,5 +385,6 @@ return {
         event = "VeryLazy",
         opts = {},
     },
+    -- highlight search until done
     "romainl/vim-cool",
 }

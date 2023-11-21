@@ -28,7 +28,14 @@ vim.opt.scrolloff = 8
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.lazyredraw = true
-vim.opt.mouse = "a"
+
+-- disable mouse clicking and scrolling
+vim.keymap.set("", "<up>", "<nop>", { noremap = true })
+vim.keymap.set("", "<down>", "<nop>", { noremap = true })
+vim.keymap.set("i", "<up>", "<nop>", { noremap = true })
+vim.keymap.set("i", "<down>", "<nop>", { noremap = true })
+vim.opt.mouse = ""
+
 vim.opt.inccommand = "nosplit"
 vim.opt.laststatus = 3
 
