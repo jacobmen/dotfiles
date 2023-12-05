@@ -17,3 +17,7 @@ fi
 
 config checkout
 config config status.showUntrackedFiles no
+
+config submodule init
+config submodule update
+

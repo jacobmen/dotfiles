@@ -35,6 +35,7 @@ source $ZDOTDIR/aliases
 source $ZDOTDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZDOTDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $ZDOTDIR/.fzf.zsh
+source $ZDOTDIR/LS_COLORS/lscolors.sh
 
 # Haskell
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
