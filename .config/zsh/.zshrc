@@ -34,7 +34,11 @@ bindkey -e
 source $ZDOTDIR/aliases
 source $ZDOTDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source $ZDOTDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 source $ZDOTDIR/.fzf.zsh
+# Override default preview options after sourcing fzf
+export FZF_CTRL_T_OPTS="--preview='bat --color=always {}' --height=100% --bind shift-up:preview-page-up,shift-down:preview-page-down"
+
 source $ZDOTDIR/LS_COLORS/lscolors.sh
 
 # Haskell
