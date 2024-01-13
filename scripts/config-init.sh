@@ -21,3 +21,5 @@ config config status.showUntrackedFiles no
 config submodule init
 config submodule update
 
+# Install fzf binary only. Config files already exist
+"$HOME"/.fzf/install --bin --no-key-bindings --no-completion --no-update-rc
