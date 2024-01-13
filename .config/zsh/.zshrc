@@ -1,5 +1,5 @@
 # need to load before compinit (https://github.com/agkozak/zsh-z#installation)
-source $ZDOTDIR/zsh-z.plugin.zsh
+source $ZDOTDIR/zsh-z/zsh-z.plugin.zsh
 zstyle ':completion:*' menu select
 
 zmodload zsh/complist

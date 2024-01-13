@@ -1,6 +1,6 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */home/jacob/.fzf/bin* ]]; then
+if [[ ! "$PATH" == *.fzf/bin* ]]; then
   export PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
 fi
 
