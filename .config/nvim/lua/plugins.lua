@@ -334,10 +334,43 @@ return {
         },
     },
     {
-        "ruifm/gitlinker.nvim",
-        dependencies = "nvim-lua/plenary.nvim",
+        "linrongbin16/gitlinker.nvim",
         opts = {
-            mappings = "<leader>gy",
+            highlight_duration = 0,
+        },
+        keys = {
+            -- Copy git permalink to clipboard
+            {
+                "<leader>gy",
+                "<cmd>GitLink<cr>",
+                mode = { "n", "v" },
+                noremap = true,
+                silent = true,
+            },
+            -- Open git permalink in browser
+            {
+                "<leader>gY",
+                "<cmd>GitLink!<cr>",
+                mode = { "n", "v" },
+                noremap = true,
+                silent = true,
+            },
+            -- Copy git blame permalink to clipboard
+            {
+                "<leader>gb",
+                "<cmd>GitLink blame<cr>",
+                mode = { "n", "v" },
+                noremap = true,
+                silent = true,
+            },
+            -- Open git blame permalink in browser
+            {
+                "<leader>gB",
+                "<cmd>GitLink! blame<cr>",
+                mode = { "n", "v" },
+                noremap = true,
+                silent = true,
+            },
         },
     },
     {
