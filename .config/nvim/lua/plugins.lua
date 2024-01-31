@@ -321,9 +321,16 @@ return {
     },
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    "jayp0521/mason-null-ls.nvim",
     {
-        "jose-elias-alvarez/null-ls.nvim",
+        "jay-babu/mason-null-ls.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        dependencies = {
+            "williamboman/mason.nvim",
+            "nvimtools/none-ls.nvim",
+        },
+    },
+    {
+        "nvimtools/none-ls.nvim",
         dependencies = "nvim-lua/plenary.nvim",
     },
     {
