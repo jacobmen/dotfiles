@@ -23,3 +23,6 @@ config submodule update
 
 # Install fzf binary only. Config files already exist
 "$HOME"/.fzf/install --bin --no-key-bindings --no-completion --no-update-rc
+
+# Install ugit / git undo
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-V/ugit/master/install)"
