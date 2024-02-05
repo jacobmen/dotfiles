@@ -80,12 +80,6 @@ return {
         version = "*",
     },
     {
-        "mbbill/undotree",
-        keys = {
-            { "<leader>u", ":UndotreeToggle<CR>", mode = "n", silent = true },
-        },
-    },
-    {
         "jmckiern/vim-venter",
         keys = {
             { "<leader>v", ":VenterToggle<CR>", mode = "n", silent = true },
@@ -171,14 +165,80 @@ return {
         branch = "0.1.x",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            {
-                "nvim-telescope/telescope-fzf-native.nvim",
-                build = "make",
-                config = function()
-                    require("telescope").load_extension("fzf")
-                end,
-            },
+            "nvim-tree/nvim-web-devicons",
+            "debugloop/telescope-undo.nvim",
+            "folke/trouble.nvim",
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
+        config = function()
+            local telescope = require("telescope")
+            local actions = require("telescope.actions")
+            local undo_actions = require("telescope-undo.actions")
+            local trouble = require("trouble.providers.telescope")
+
+            telescope.setup({
+                pickers = {
+                    find_files = {
+                        hidden = true,
+                    },
+                },
+                defaults = {
+                    mappings = {
+                        i = {
+                            ["<C-j>"] = actions.move_selection_next,
+                            ["<C-k>"] = actions.move_selection_previous,
+                            ["<C-s>"] = actions.select_horizontal,
+                            ["<c-t>"] = trouble.open_with_trouble,
+                        },
+                        n = {
+                            ["<c-t>"] = trouble.open_with_trouble,
+                        },
+                    },
+                    file_ignore_patterns = {
+                        "^.git/",
+                    },
+                    vimgrep_arguments = {
+                        "rg",
+                        "--hidden",
+                        "--color=never",
+                        "--no-heading",
+                        "--with-filename",
+                        "--line-number",
+                        "--column",
+                        "--smart-case",
+                    },
+                },
+                extensions = {
+                    undo = {
+                        use_delta = true,
+                        layout_strategy = "vertical",
+                        layout_config = {
+                            preview_height = 0.8,
+                        },
+                        mappings = {
+                            i = {
+                                ["<cr>"] = undo_actions.restore,
+                            },
+                            n = {
+                                ["<cr>"] = undo_actions.restore,
+                            }
+                        },
+                    },
+                },
+            })
+
+            telescope.load_extension("fzf")
+            telescope.load_extension("undo")
+
+            -- Adds line numbers to preview buffers
+            vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
+
+            local keymap = vim.keymap
+            keymap.set("n", "<C-p>", "<cmd>Telescope find_files<cr>")
+            keymap.set("n", "<C-f>", "<cmd>Telescope live_grep<cr>")
+            keymap.set("n", "<leader>/", "<cmd>Telescope grep_string<cr>")
+            keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>")
+        end,
     },
     {
         "nvim-treesitter/nvim-treesitter",
