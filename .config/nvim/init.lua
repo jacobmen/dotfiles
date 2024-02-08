@@ -52,6 +52,9 @@ vim.opt.shortmess:append({ c = true })
 vim.opt.colorcolumn = "100"
 vim.cmd.highlight({ "ColorColumn", "ctermbg=0", "guibg=lightgrey" })
 
+-- allow for LSP diagnostics and git signs to exist side by side
+vim.cmd("set signcolumn=auto:2")
+
 -- Easier split movement
 vim.keymap.set("", "<C-h>", "<C-w>h")
 vim.keymap.set("", "<C-j>", "<C-w>j")

@@ -90,7 +90,10 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
-        opts = {},
+        opts = {
+            sign_priority = 100,
+        },
+    },
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
