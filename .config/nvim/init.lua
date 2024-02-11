@@ -29,6 +29,9 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.lazyredraw = true
 
+vim.opt.spell = true
+vim.opt.spelllang = { 'en_us' }
+
 -- disable mouse clicking and scrolling
 vim.keymap.set("", "<up>", "<nop>", { noremap = true })
 vim.keymap.set("", "<down>", "<nop>", { noremap = true })

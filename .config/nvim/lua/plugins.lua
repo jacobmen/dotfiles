@@ -410,6 +410,7 @@ return {
                 "lua",
                 "make",
                 "markdown",
+                "markdown_inline",
                 "python",
                 "rust",
                 "toml",
@@ -518,16 +519,43 @@ return {
         },
     },
     {
-        "jay-babu/mason-null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
+            "nvim-lua/plenary.nvim",
             "williamboman/mason.nvim",
-            "nvimtools/none-ls.nvim",
+            "jay-babu/mason-null-ls.nvim",
         },
-    },
-    {
-        "nvimtools/none-ls.nvim",
-        dependencies = "nvim-lua/plenary.nvim",
+        config = function()
+            -- TODO: replace null-ls https://www.youtube.com/watch?v=ybUE4D80XSk
+            local null_ls = require("null-ls")
+
+            local code_actions = null_ls.builtins.code_actions
+            local formatting = null_ls.builtins.formatting
+            local diagnostics = null_ls.builtins.diagnostics
+
+            null_ls.setup({
+                sources = {
+                    code_actions.gitsigns,
+
+                    formatting.stylua,
+                    formatting.black,
+
+                    -- Docker linting
+                    diagnostics.hadolint,
+                    diagnostics.markdownlint,
+                    diagnostics.shellcheck,
+                    diagnostics.yamllint,
+                    diagnostics.checkmake,
+                },
+            })
+
+            require("mason-null-ls").setup({
+                ensure_installed = nil,
+                automatic_installation = true,
+                automatic_setup = false,
+            })
+        end,
     },
     {
         "folke/todo-comments.nvim",

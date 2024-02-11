@@ -1,4 +1,3 @@
-set spell
 let g:vimtex_view_general_options
     \ = '-reuse-instance -forward-search @tex @line @pdf'
 
