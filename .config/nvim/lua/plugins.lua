@@ -324,6 +324,7 @@ return {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons",
             "debugloop/telescope-undo.nvim",
+            "ThePrimeagen/harpoon",
             "folke/trouble.nvim",
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
@@ -386,6 +387,7 @@ return {
 
             telescope.load_extension("fzf")
             telescope.load_extension("undo")
+            telescope.load_extension("harpoon")
 
             -- Adds line numbers to preview buffers
             vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
@@ -678,4 +680,35 @@ return {
     },
     -- highlight search until done
     "romainl/vim-cool",
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope.nvim",
+        },
+        config = function()
+            local harpoon = require("harpoon")
+            harpoon:setup()
+
+            vim.keymap.set("n", "<leader>hx", function()
+                harpoon:list():append()
+            end, { desc = "Add to harpoon list" })
+            vim.keymap.set("n", "<leader>hX", function()
+                harpoon:list():remove()
+            end, { desc = "Remove from harpoon list" })
+            vim.keymap.set("n", "<leader>hM", function()
+                harpoon:list():clear()
+            end, { desc = "Clear harpoon list" })
+
+            vim.keymap.set("n", "<leader>hn", function()
+                harpoon:list():next()
+            end, { desc = "Next harpoon entry" })
+            vim.keymap.set("n", "<leader>hp", function()
+                harpoon:list():prev()
+            end, { desc = "Previous harpoon entry" })
+
+            vim.keymap.set("n", "<leader>hm", ":Telescope harpoon marks<CR>", { desc = "Open harpoon list" })
+        end,
+    },
 }
