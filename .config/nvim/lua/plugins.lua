@@ -220,7 +220,6 @@ return {
     },
     {
         "hrsh7th/nvim-cmp",
-        event = "InsertEnter",
         dependencies = {
             "hrsh7th/cmp-buffer",           -- source for text in buffer
             "hrsh7th/cmp-path",             -- source for file system paths
@@ -285,8 +284,8 @@ return {
                 sources = cmp.config.sources({
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
-                    { name = "buffer" },
                     { name = "path" },
+                    { name = "buffer" },
                 }),
                 formatting = {
                     format = lspkind.cmp_format({
