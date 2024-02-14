@@ -708,7 +708,7 @@ return {
                 harpoon:list():prev()
             end, { desc = "Previous harpoon entry" })
 
-            vim.keymap.set("n", "<leader>hm", ":Telescope harpoon marks<CR>", { desc = "Open harpoon list" })
+            vim.keymap.set("n", "<leader>hh", ":Telescope harpoon marks<CR>", { desc = "Open harpoon list" })
         end,
     },
 }
