@@ -134,24 +134,26 @@ return {
 
                             -- See `:help vim.lsp.*` for documentation on any of the below functions
                             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
-                            vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
+                            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
                             vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-                            vim.keymap.set("i", "<C-k>", "<cmd>Lspsaga signature_help<CR>", opts)
+                            vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
                             vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
                             vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
                             vim.keymap.set("n", "<leader>wl", function()
                                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
                             end, opts)
-                            vim.keymap.set("n", "<leader>rr", "<cmd>Lspsaga rename<CR>", opts)
-                            vim.keymap.set("n", "<leader>ga", "<cmd>Lspsaga code_action<CR>", opts)
-                            vim.keymap.set("n", "<leader>gr", "<cmd>Lspsaga lsp_finder<CR>", opts)
+
+                            vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, opts)
+
+                            vim.keymap.set({ "n", "v" }, "<leader>ga", vim.lsp.buf.code_action, opts)
+                            vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
                             vim.keymap.set("n", "<leader>f", function()
                                 vim.lsp.buf.format({ async = true })
                             end, opts)
 
-                            vim.keymap.set("n", "<leader>gn", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
-                            vim.keymap.set("n", "<leader>gN", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
-                            vim.keymap.set("n", "<leader>cc", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts)
+                            vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
+                            vim.keymap.set("n", "<leader>gN", vim.diagnostic.goto_prev, opts)
+                            vim.keymap.set("n", "<leader>cc", vim.diagnostic.open_float, opts)
                         end,
                         capabilities = server_name == "clangd" and { offsetEncoding = "utf-8" } or capabilities,
                     })
@@ -168,54 +170,6 @@ return {
                 local hl = "DiagnosticSign" .. type
                 vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
             end
-        end,
-    },
-    {
-        "tami5/lspsaga.nvim",
-        lazy = false,
-        config = function()
-            require("lspsaga").init_lsp_saga({
-                debug = false,
-                use_saga_diagnostic_sign = true,
-                -- diagnostic sign
-                error_sign = diag_signs.error,
-                warn_sign = diag_signs.warn,
-                hint_sign = diag_signs.hint,
-                infor_sign = diag_signs.info,
-                diagnostic_header_icon = "",
-                -- code action title icon
-                code_action_icon = "〉",
-                code_action_prompt = {
-                    enable = false,
-                    sign = true,
-                    sign_priority = 40,
-                    virtual_text = true,
-                },
-                finder_definition_icon = "",
-                finder_reference_icon = "",
-                max_preview_lines = 10,
-                finder_action_keys = {
-                    open = "<CR>",
-                    vsplit = "<C-v>",
-                    split = "<C-S>",
-                    quit = "<C-c>",
-                    scroll_down = "<C-f>",
-                    scroll_up = "<C-b>",
-                },
-                code_action_keys = {
-                    quit = "<C-c>",
-                    exec = "<CR>",
-                },
-                rename_action_keys = {
-                    quit = "<C-c>",
-                    exec = "<CR>",
-                },
-                definition_preview_icon = "",
-                border_style = "single",
-                rename_prompt_prefix = "➤",
-                server_filetype_map = {},
-                diagnostic_prefix_format = "%d. ",
-            })
         end,
     },
     {
