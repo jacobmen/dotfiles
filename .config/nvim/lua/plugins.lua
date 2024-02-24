@@ -41,16 +41,16 @@ return {
 
             autopairs.add_rules({
                 rule("$", "$", { "tex", "latex" })
-                -- Move over $ if next character
+                    -- Move over $ if next character
                     :with_move(function(opts)
                         return opts.next_char == opts.char
                     end)
-                -- Don't insert pair if previous character escapes $
+                    -- Don't insert pair if previous character escapes $
                     :with_pair(
                         cond.not_before_regex("\\", 1)
                     ),
                 rule("\\[", "\\]", { "tex", "latex" })
-                -- don't move right when character repeated
+                    -- don't move right when character repeated
                     :with_move(cond.none()),
             })
         end,
@@ -101,6 +101,7 @@ return {
             "hrsh7th/cmp-nvim-lsp",
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
+            "smjonas/inc-rename.nvim",
         },
         config = function()
             require("mason").setup()
@@ -143,7 +144,9 @@ return {
                                 print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
                             end, opts)
 
-                            vim.keymap.set("n", "<leader>rr", vim.lsp.buf.rename, opts)
+                            vim.keymap.set("n", "<leader>rr", function()
+                                return ":IncRename " .. vim.fn.expand("<cword>")
+                            end, { expr = true })
 
                             vim.keymap.set({ "n", "v" }, "<leader>ga", vim.lsp.buf.code_action, opts)
                             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
@@ -288,6 +291,7 @@ return {
             -- UI library
             "MunifTanjim/nui.nvim",
             "rcarriga/nvim-notify",
+            "smjonas/inc-rename.nvim",
         },
         config = function()
             require("noice").setup({
@@ -316,11 +320,15 @@ return {
                     },
                 },
                 presets = {
-                    -- inc_rename = true,
+                    inc_rename = true,
                     lsp_doc_border = true,
                 },
             })
         end,
+    },
+    {
+        "smjonas/inc-rename.nvim",
+        opts = {},
     },
     {
         "L3MON4D3/LuaSnip",
@@ -481,9 +489,27 @@ return {
             },
         },
         keys = {
-            { "<leader>xx", ":TroubleToggle<cr>",                     mode = "n", noremap = true, silent = true },
-            { "<leader>xw", "<cmd>Trouble workspace_diagnostics<cr>", mode = "n", noremap = true, silent = true },
-            { "<leader>xt", "<cmd>Trouble telescope<cr>",             mode = "n", noremap = true, silent = true },
+            {
+                "<leader>xx",
+                ":TroubleToggle<cr>",
+                mode = "n",
+                noremap = true,
+                silent = true,
+            },
+            {
+                "<leader>xw",
+                "<cmd>Trouble workspace_diagnostics<cr>",
+                mode = "n",
+                noremap = true,
+                silent = true,
+            },
+            {
+                "<leader>xt",
+                "<cmd>Trouble telescope<cr>",
+                mode = "n",
+                noremap = true,
+                silent = true,
+            },
         },
     },
     {
