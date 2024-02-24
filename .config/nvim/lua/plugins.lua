@@ -102,6 +102,7 @@ return {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
             "smjonas/inc-rename.nvim",
+            "aznhe21/actions-preview.nvim",
         },
         config = function()
             require("mason").setup()
@@ -110,6 +111,7 @@ return {
             local lspconfig = require("lspconfig")
             local mason_lspconfig = require("mason-lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
+            local actions_preview = require("actions-preview")
 
             mason_lspconfig.setup({
                 ensure_installed = {
@@ -149,7 +151,7 @@ return {
                                 return ":IncRename " .. vim.fn.expand("<cword>")
                             end, { expr = true })
 
-                            vim.keymap.set({ "n", "v" }, "<leader>ga", vim.lsp.buf.code_action, opts)
+                            vim.keymap.set({ "n", "v" }, "<leader>ga", actions_preview.code_actions, opts)
                             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
                             vim.keymap.set("n", "<leader>f", function()
                                 vim.lsp.buf.format({ async = true })
@@ -330,6 +332,29 @@ return {
     {
         "smjonas/inc-rename.nvim",
         opts = {},
+    },
+    {
+        "aznhe21/actions-preview.nvim",
+        config = function()
+            require("actions-preview").setup({
+                highlight_command = {
+                    require("actions-preview.highlight").delta("delta --no-gitconfig --side-by-side"),
+                },
+                telescope = {
+                    sorting_strategy = "ascending",
+                    layout_strategy = "vertical",
+                    layout_config = {
+                        width = 0.7,
+                        height = 0.9,
+                        prompt_position = "top",
+                        preview_cutoff = 20,
+                        preview_height = function(_, _, max_lines)
+                            return max_lines - 15
+                        end,
+                    },
+                },
+            })
+        end,
     },
     {
         "L3MON4D3/LuaSnip",
