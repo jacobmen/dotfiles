@@ -175,13 +175,20 @@ return {
     {
         "hrsh7th/nvim-cmp",
         dependencies = {
-            "hrsh7th/cmp-buffer",           -- source for text in buffer
-            "hrsh7th/cmp-path",             -- source for file system paths
+            -- source for text in buffer
+            "hrsh7th/cmp-buffer",
+            -- source for file system paths
+            "hrsh7th/cmp-path",
+            -- source for command line
             "hrsh7th/cmp-cmdline",
-            "L3MON4D3/LuaSnip",             -- snippet engine
-            "saadparwaiz1/cmp_luasnip",     -- for autocompletion
-            "rafamadriz/friendly-snippets", -- useful snippets
-            "onsails/lspkind.nvim",         -- vs-code like pictograms
+            -- snippet engine
+            "L3MON4D3/LuaSnip",
+            -- for autocompletion
+            "saadparwaiz1/cmp_luasnip",
+            -- useful snippets
+            "rafamadriz/friendly-snippets",
+            -- vs-code like pictograms
+            "onsails/lspkind.nvim",
         },
         config = function()
             local cmp = require("cmp")
@@ -275,9 +282,44 @@ return {
         end,
     },
     {
-        "rcarriga/nvim-notify",
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            -- UI library
+            "MunifTanjim/nui.nvim",
+            "rcarriga/nvim-notify",
+        },
         config = function()
-            vim.notify = require("notify")
+            require("noice").setup({
+                messages = {
+                    view_search = false,
+                },
+                routes = {
+                    {
+                        filter = {
+                            event = "msg_show",
+                            kind = "",
+                            find = "written",
+                        },
+                        opts = { skip = true },
+                    },
+                },
+                lsp = {
+                    progress = {
+                        enabled = false,
+                    },
+                    -- override markdown rendering so that cmp and other plugins use Treesitter
+                    override = {
+                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                        ["vim.lsp.util.stylize_markdown"] = true,
+                        ["cmp.entry.get_documentation"] = true,
+                    },
+                },
+                presets = {
+                    -- inc_rename = true,
+                    lsp_doc_border = true,
+                },
+            })
         end,
     },
     {
@@ -446,42 +488,58 @@ return {
     },
     {
         "nvim-lualine/lualine.nvim",
-        opts = {
-            options = {
-                icons_enabled = true,
-                theme = "gruvbox",
-                always_divide_middle = true,
-            },
-            sections = {
-                lualine_a = { "mode" },
-                lualine_b = { "branch", "diff", { "diagnostics", sources = { "nvim_diagnostic" } } },
-                lualine_c = {
-                    {
-                        "filename",
-                        -- displays file status (readonly status, modified status)
-                        file_status = true,
-                        -- 0 = just filename, 1 = relative path, 2 = absolute path
-                        path = 1,
-                    },
-                },
-                lualine_x = {
-                    "encoding",
-                    "filetype",
-                },
-                lualine_y = { "progress" },
-                lualine_z = { "location" },
-            },
-            inactive_sections = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = { "filename" },
-                lualine_x = { "location" },
-                lualine_y = {},
-                lualine_z = {},
-            },
-            tabline = {},
-            extensions = {},
+        dependencies = {
+            "folke/noice.nvim",
         },
+        config = function()
+            local noice = require("noice")
+
+            require("lualine").setup({
+                options = {
+                    icons_enabled = true,
+                    theme = "gruvbox",
+                    always_divide_middle = true,
+                },
+                sections = {
+                    lualine_a = {
+                        {
+                            noice.api.status.mode.get,
+                            cond = noice.api.status.mode.has,
+                        },
+                    },
+                    lualine_b = { "branch", "diff", { "diagnostics", sources = { "nvim_diagnostic" } } },
+                    lualine_c = {
+                        {
+                            "filename",
+                            -- displays file status (readonly status, modified status)
+                            file_status = true,
+                            -- 0 = just filename, 1 = relative path, 2 = absolute path
+                            path = 1,
+                        },
+                        {
+                            noice.api.status.search.get,
+                            cond = noice.api.status.search.has,
+                            color = { fg = "#ff9e64" },
+                        },
+                    },
+                    lualine_x = {
+                        "filetype",
+                    },
+                    lualine_y = { "progress" },
+                    lualine_z = { "location" },
+                },
+                inactive_sections = {
+                    lualine_a = {},
+                    lualine_b = {},
+                    lualine_c = { "filename" },
+                    lualine_x = { "location" },
+                    lualine_y = {},
+                    lualine_z = {},
+                },
+                tabline = {},
+                extensions = {},
+            })
+        end,
     },
     {
         "ellisonleao/gruvbox.nvim",

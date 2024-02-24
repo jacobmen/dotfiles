@@ -27,7 +27,6 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-vim.opt.lazyredraw = true
 
 vim.opt.spell = true
 vim.opt.spelllang = { 'en_us' }
@@ -45,12 +44,14 @@ vim.opt.laststatus = 3
 -- Give more space for displaying messages.
 vim.opt.cmdheight = 2
 
--- Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+-- Having longer update time (default is 4000 ms = 4 s) leads to noticeable
 -- delays and poor user experience.
 vim.opt.updatetime = 50
 
 -- Don't pass messages to |ins-completion-menu|.
 vim.opt.shortmess:append({ c = true })
+-- Don't show "x lines less" / "x lines yanked" messages
+vim.opt.report = 9999
 
 vim.opt.colorcolumn = "100"
 vim.cmd.highlight({ "ColorColumn", "ctermbg=0", "guibg=lightgrey" })
