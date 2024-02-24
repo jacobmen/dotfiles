@@ -113,6 +113,7 @@ return {
 
             mason_lspconfig.setup({
                 ensure_installed = {
+                    "bashls",
                     "clangd",
                     "lua_ls",
                     "pyright",
@@ -628,7 +629,6 @@ return {
                     -- Docker linting
                     diagnostics.hadolint,
                     diagnostics.markdownlint,
-                    diagnostics.shellcheck,
                     diagnostics.yamllint,
                     diagnostics.checkmake,
                 },
