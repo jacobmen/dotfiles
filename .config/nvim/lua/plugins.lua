@@ -103,6 +103,7 @@ return {
             "williamboman/mason-lspconfig.nvim",
             "smjonas/inc-rename.nvim",
             "aznhe21/actions-preview.nvim",
+        "nvim-telescope/telescope.nvim",
         },
         config = function()
             require("mason").setup()
@@ -112,6 +113,7 @@ return {
             local mason_lspconfig = require("mason-lspconfig")
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local actions_preview = require("actions-preview")
+            local telescope_builtins = require("telescope.builtin")
 
             mason_lspconfig.setup({
                 ensure_installed = {
@@ -152,7 +154,7 @@ return {
                             end, { expr = true })
 
                             vim.keymap.set({ "n", "v" }, "<leader>ga", actions_preview.code_actions, opts)
-                            vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, opts)
+                            vim.keymap.set("n", "<leader>gr", telescope_builtins.lsp_references, opts)
                             vim.keymap.set("n", "<leader>f", function()
                                 vim.lsp.buf.format({ async = true })
                             end, opts)
