@@ -42,3 +42,4 @@ alias nw="cd ~/vimwiki && nvim index.md -c VenterToggle"
 alias lg='lazygit'
 alias wthr='curl wttr.in'
 alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+alias shell_benchmark='for i in $(seq 1 10); do time $SHELL -i -c exit; done'
