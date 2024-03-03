@@ -41,16 +41,16 @@ return {
 
             autopairs.add_rules({
                 rule("$", "$", { "tex", "latex" })
-                -- Move over $ if next character
+                    -- Move over $ if next character
                     :with_move(function(opts)
                         return opts.next_char == opts.char
                     end)
-                -- Don't insert pair if previous character escapes $
+                    -- Don't insert pair if previous character escapes $
                     :with_pair(
                         cond.not_before_regex("\\", 1)
                     ),
                 rule("\\[", "\\]", { "tex", "latex" })
-                -- don't move right when character repeated
+                    -- don't move right when character repeated
                     :with_move(cond.none()),
             })
         end,
@@ -117,7 +117,6 @@ return {
 
             mason_lspconfig.setup({
                 ensure_installed = {
-                    "bashls",
                     "clangd",
                     "lua_ls",
                     "pyright",
@@ -637,6 +636,7 @@ return {
             "nvim-lua/plenary.nvim",
             "williamboman/mason.nvim",
             "jay-babu/mason-null-ls.nvim",
+            "gbprod/none-ls-shellcheck.nvim",
         },
         config = function()
             -- TODO: replace null-ls https://www.youtube.com/watch?v=ybUE4D80XSk
@@ -660,6 +660,9 @@ return {
                     diagnostics.checkmake,
                 },
             })
+
+            null_ls.register(require("none-ls-shellcheck.diagnostics"))
+            null_ls.register(require("none-ls-shellcheck.code_actions"))
 
             require("mason-null-ls").setup({
                 ensure_installed = nil,
