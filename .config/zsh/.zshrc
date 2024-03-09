@@ -1,5 +1,3 @@
-# need to load before compinit (https://github.com/agkozak/zsh-z#installation)
-source $ZDOTDIR/zsh-z/zsh-z.plugin.zsh
 zstyle ':completion:*' menu select
 
 zmodload zsh/complist
@@ -45,6 +43,8 @@ source $ZDOTDIR/LS_COLORS/lscolors.sh
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 # Rust
 [ -d "$HOME/.cargo/bin" ] && export PATH="$PATH:$HOME/.cargo/bin"
+
+eval "$(zoxide init zsh)"
 
 # Autostart tmux (https://unix.stackexchange.com/a/113768)
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then

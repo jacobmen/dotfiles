@@ -10,9 +10,6 @@
 [submodule ".config/zsh/LS_COLORS"]
 	path = .config/zsh/LS_COLORS
 	url = https://github.com/trapd00r/LS_COLORS.git
-[submodule ".config/zsh/zsh-z"]
-	path = .config/zsh/zsh-z
-	url = https://github.com/agkozak/zsh-z
 [submodule ".fzf"]
 	path = .fzf
 	url = https://github.com/junegunn/fzf
