@@ -1,3 +1,5 @@
+# zmodload zsh/zprof
+
 zstyle ':completion:*' menu select
 
 zmodload zsh/complist
@@ -17,14 +19,6 @@ prompt pure
 setopt AUTO_PUSHD
 setopt PUSHD_IGNORE_DUPS
 setopt PUSHD_SILENT
-
-# enable vim mode
-bindkey -v
-export KEYTIMEOUT=1
-autoload -Uz edit-command-line
-zle -N edit-command-line
-# v in normal mode to edit in nvim
-bindkey -M vicmd v edit-command-line
 
 # C-e and C-a in insert mode
 bindkey -e
@@ -50,3 +44,5 @@ eval "$(zoxide init zsh)"
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   exec tmux
 fi
+
+# zprof
