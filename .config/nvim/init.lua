@@ -107,9 +107,6 @@ require("lazy").setup("plugins")
 
 vim.cmd([[
     runtime ./autocommands.vim
-    " Plugin options
-    let g:vimwiki_list = [{'path': '~/vimwiki/',
-                          \ 'syntax': 'markdown', 'ext': '.md'}]
 ]])
 
 vim.g.do_filetype_lua = 1

@@ -38,7 +38,6 @@ alias mv='mv -iv'
 alias rm='rm -i'
 
 # other
-alias nw="cd ~/vimwiki && nvim index.md -c VenterToggle"
 alias lg='lazygit'
 alias wthr='curl wttr.in'
 alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"

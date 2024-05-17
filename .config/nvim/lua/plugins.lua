@@ -613,7 +613,6 @@ return {
         end,
     },
     "lervag/vimtex",
-    "vimwiki/vimwiki",
     {
         "anuvyklack/windows.nvim",
         dependencies = "anuvyklack/middleclass",
