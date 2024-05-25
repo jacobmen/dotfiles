@@ -796,78 +796,35 @@ return {
         end,
     },
     {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
+        "stevearc/oil.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        opts = {
+            default_file_explorer = true,
+            keymaps = {
+                ["<leader>?"] = "actions.show_help",
+                ["<CR>"] = "actions.select",
+                ["<C-v>"] = "actions.select_vsplit",
+                ["<C-s>"] = "actions.select_split",
+                ["<C-t>"] = "actions.select_tab",
+                ["<leader>p"] = "actions.preview",
+                ["<C-c>"] = "actions.close",
+                ["-"] = "actions.parent",
+                ["_"] = "actions.open_cwd",
+                ["`"] = "actions.cd",
+                ["~"] = "actions.tcd",
+                ["<leader>s"] = "actions.change_sort",
+                ["<leader>x"] = "actions.open_external",
+                ["<leader>."] = "actions.toggle_hidden",
+            },
+            use_default_keymaps = false,
+            view_options = {
+                show_hidden = true,
+            },
         },
-        config = function()
-            local api = require("nvim-tree.api")
-            local view = require("nvim-tree.view")
-
-            local on_attach = function(bufnr)
-                local opts = function(desc)
-                    return {
-                        desc = "nvim-tree: " .. desc,
-                        buffer = bufnr,
-                        noremap = true,
-                        silent = true,
-                        nowait = true,
-                    }
-                end
-
-                vim.keymap.set("n", "<S-k>", api.node.show_info_popup, opts("Info"))
-                vim.keymap.set("n", "r", api.fs.rename, opts("Rename"))
-                vim.keymap.set("n", "a", api.fs.create, opts("Create File Or Directory"))
-                vim.keymap.set("n", "y", api.fs.copy.node, opts("Copy"))
-                vim.keymap.set("n", "p", api.fs.paste, opts("Paste"))
-                vim.keymap.set("n", "d", api.fs.remove, opts("Delete"))
-                vim.keymap.set("n", "x", api.fs.cut, opts("Cut"))
-
-                vim.keymap.set("n", "<leader>y", api.fs.copy.filename, opts("Copy Name"))
-                vim.keymap.set("n", "<leader>Y", api.fs.copy.relative_path, opts("Copy Relative Path"))
-
-                vim.keymap.set("n", "<CR>", api.node.open.edit, opts("Open"))
-                vim.keymap.set("n", "<Tab>", api.node.open.preview, opts("Open Preview"))
-                vim.keymap.set("n", "<C-v>", api.node.open.vertical, opts("Open: Vertical Split"))
-                vim.keymap.set("n", "<C-s>", api.node.open.horizontal, opts("Open: Horizontal Split"))
-
-                vim.keymap.set("n", "E", api.tree.expand_all, opts("Expand All"))
-                vim.keymap.set("n", "C", api.tree.collapse_all, opts("Collapse"))
-                vim.keymap.set("n", "f", api.live_filter.start, opts("Live Filter: Start"))
-                vim.keymap.set("n", "F", api.live_filter.clear, opts("Live Filter: Clear"))
-
-                vim.keymap.set("n", "m", api.marks.toggle, opts("Toggle Bookmark"))
-                vim.keymap.set("n", "bd", api.marks.bulk.delete, opts("Delete Bookmarked"))
-                vim.keymap.set("n", "bm", api.marks.bulk.move, opts("Move Bookmarked"))
-            end
-
-            require("nvim-tree").setup({
-                on_attach = on_attach,
-                view = {
-                    width = 40,
-                },
-                ui = {
-                    confirm = {
-                        default_yes = true,
-                    },
-                },
-            })
-
-            -- Keep nvim tree open when saved session is opened
-            -- See: https://github.com/nvim-tree/nvim-tree.lua/wiki/Recipes#workaround-when-using-rmagattiauto-session
-            vim.api.nvim_create_autocmd({ "BufEnter" }, {
-                pattern = "NvimTree*",
-                callback = function()
-                    if not view.is_visible() then
-                        api.tree.open()
-                    end
-                end,
-            })
-        end,
         keys = {
             {
                 "<leader>tt",
-                ":NvimTreeToggle<cr>",
+                ":Oil<cr>",
                 mode = "n",
                 noremap = true,
                 silent = true,
