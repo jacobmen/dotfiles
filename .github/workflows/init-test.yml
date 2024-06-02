@@ -1,0 +1,16 @@
+name: "Init Script Checker"
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  test-init-script:
+    runs-on: [ ubuntu-latest, macos-latest ]
+
+    steps:
+      - name: Execute script
+        run: curl -sL https://raw.githubusercontent.com/jacobmen/dotfiles/master/scripts/config-init.sh | bash
