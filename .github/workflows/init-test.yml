@@ -15,5 +15,19 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     steps:
+      - name: Install Dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: apt-get install -y zsh
+
+      - name: Install Dependencies (macOS)
+        if: runner.os == 'macOs'
+        run: brew install zsh
+
+      - name: Change shell to Zsh
+        run: chsh -s $(which zsh)
+
       - name: Execute script
         run: curl -sL https://raw.githubusercontent.com/jacobmen/dotfiles/master/scripts/config-init.sh | bash
+
+      - name: Source config # Check that the number of stderr lines is zero
+        run: "[ $(source $ZDOTDIR/.zshrc 2>&1 | wc -l) -eq 0 ]" 
