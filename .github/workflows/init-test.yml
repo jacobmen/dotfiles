@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Install Dependencies (Ubuntu)
         if: runner.os == 'Linux'
-        run: apt-get install -y zsh
+        run: sudo apt-get install -y zsh
 
       - name: Install Dependencies (macOS)
         if: runner.os == 'macOs'
