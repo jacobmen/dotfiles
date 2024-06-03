@@ -27,7 +27,9 @@ jobs:
         run: curl -sL https://raw.githubusercontent.com/jacobmen/dotfiles/master/scripts/config-init.sh | bash
 
       - name: Change shell to Zsh
-        run: sudo chsh -s $(which zsh) $(whoami)
+        run: |
+          sudo chsh -s $(which zsh) $(whoami)
+          exec zsh
 
       - name: Source config # Check that the number of stderr lines is zero
         run: source $HOME/.config/zsh/.zshrc #"[ $(source $ZDOTDIR/.zshrc 2>&1 | wc -l) -eq 0 ]" 
