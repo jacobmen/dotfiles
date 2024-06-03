@@ -32,4 +32,6 @@ jobs:
           exec zsh
 
       - name: Source config # Check that the number of stderr lines is zero
-        run: source $HOME/.config/zsh/.zshrc #"[ $(source $ZDOTDIR/.zshrc 2>&1 | wc -l) -eq 0 ]" 
+        run: |
+          exec zsh
+          source $HOME/.config/zsh/.zshrc #"[ $(source $ZDOTDIR/.zshrc 2>&1 | wc -l) -eq 0 ]" 
