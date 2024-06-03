@@ -30,4 +30,4 @@ jobs:
         run: curl -sL https://raw.githubusercontent.com/jacobmen/dotfiles/master/scripts/config-init.sh | bash
 
       - name: Source config # Check that the number of stderr lines is zero
-        run: source $ZDOTDIR/.zshrc #"[ $(source $ZDOTDIR/.zshrc 2>&1 | wc -l) -eq 0 ]" 
+        run: source $HOME/.zshrc #"[ $(source $ZDOTDIR/.zshrc 2>&1 | wc -l) -eq 0 ]" 
