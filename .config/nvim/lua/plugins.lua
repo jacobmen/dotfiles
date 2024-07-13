@@ -107,7 +107,6 @@ return {
         },
         config = function()
             require("mason").setup()
-            require("neodev").setup()
 
             local lspconfig = require("lspconfig")
             local mason_lspconfig = require("mason-lspconfig")
@@ -132,7 +131,7 @@ return {
                     lspconfig[server_name].setup({
                         on_attach = function(client, bufnr)
                             --Enable completion triggered by <c-x><c-o>
-                            vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+                            vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
 
                             -- Mappings.
                             local opts = { noremap = true, silent = true, buffer = bufnr }
@@ -379,7 +378,7 @@ return {
             local telescope = require("telescope")
             local actions = require("telescope.actions")
             local undo_actions = require("telescope-undo.actions")
-            local trouble = require("trouble.providers.telescope")
+            local trouble = require("trouble.sources.telescope")
 
             telescope.setup({
                 pickers = {
@@ -393,10 +392,10 @@ return {
                             ["<C-j>"] = actions.move_selection_next,
                             ["<C-k>"] = actions.move_selection_previous,
                             ["<C-s>"] = actions.select_horizontal,
-                            ["<c-t>"] = trouble.open_with_trouble,
+                            ["<c-t>"] = trouble.open,
                         },
                         n = {
-                            ["<c-t>"] = trouble.open_with_trouble,
+                            ["<c-t>"] = trouble.open,
                         },
                     },
                     file_ignore_patterns = {
@@ -518,21 +517,14 @@ return {
         keys = {
             {
                 "<leader>xx",
-                ":TroubleToggle<cr>",
+                "<cmd>Trouble diagnostics toggle<cr>",
                 mode = "n",
                 noremap = true,
                 silent = true,
             },
             {
-                "<leader>xw",
-                "<cmd>Trouble workspace_diagnostics<cr>",
-                mode = "n",
-                noremap = true,
-                silent = true,
-            },
-            {
-                "<leader>xt",
-                "<cmd>Trouble telescope<cr>",
+                "<leader>xX",
+                "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
                 mode = "n",
                 noremap = true,
                 silent = true,
@@ -724,7 +716,18 @@ return {
         },
     },
     {
-        "folke/neodev.nvim",
+        "folke/lazydev.nvim",
+        dependencies = {
+            { "Bilal2453/luvit-meta", lazy = true },
+        },
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                { path = "luvit-meta/library", words = { "vim%.uv" } },
+            },
+        },
     },
     {
         "ibhagwan/smartyank.nvim",
