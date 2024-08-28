@@ -37,6 +37,8 @@ source $ZDOTDIR/LS_COLORS/lscolors.sh
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 # Rust
 [ -d "$HOME/.cargo/bin" ] && export PATH="$PATH:$HOME/.cargo/bin"
+# Bob installs of neovim
+[ -d "$HOME/.local/share/bob/nvim-bin" ] && export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
 eval "$(zoxide init zsh)"
 

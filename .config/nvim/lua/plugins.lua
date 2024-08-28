@@ -255,12 +255,18 @@ return {
                     { name = "path" },
                     { name = "buffer" },
                 }),
+                ---@diagnostic disable-next-line: missing-fields
                 formatting = {
                     format = lspkind.cmp_format({
                         mode = "symbol",
                         maxwidth = 50,
                         ellipsis_char = "...",
                     }),
+                },
+                ---@diagnostic disable-next-line: missing-fields
+                performance = {
+                    debounce = 0,
+                    throttle = 0,
                 },
             })
 
