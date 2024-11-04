@@ -29,7 +29,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 
 vim.opt.spell = true
-vim.opt.spelllang = { 'en_us' }
+vim.opt.spelllang = { "en_us" }
 
 -- disable mouse clicking and scrolling
 vim.keymap.set("", "<up>", "<nop>", { noremap = true })
@@ -38,7 +38,7 @@ vim.keymap.set("i", "<up>", "<nop>", { noremap = true })
 vim.keymap.set("i", "<down>", "<nop>", { noremap = true })
 vim.opt.mouse = ""
 
-vim.opt.inccommand = "nosplit"
+vim.opt.inccommand = "split"
 vim.opt.laststatus = 3
 
 -- Give more space for displaying messages.
@@ -65,9 +65,9 @@ vim.keymap.set("", "<C-j>", "<C-w>j")
 vim.keymap.set("", "<C-k>", "<C-w>k")
 vim.keymap.set("", "<C-l>", "<C-w>l")
 
-vim.g.loaded_matchparen = 1
 vim.keymap.set("n", "<Space>", "<NOP>")
 vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- Replace highlighted
 vim.keymap.set("v", "<leader>p", '"_dP')
@@ -108,13 +108,21 @@ vim.cmd([[
 vim.g.do_filetype_lua = 1
 
 vim.g.clipboard = {
-  name = 'OSC 52',
-  copy = {
-    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
-  },
-  paste = {
-    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
-  },
+    name = "OSC 52",
+    copy = {
+        ["+"] = require("vim.ui.clipboard.osc52").copy("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").copy("*"),
+    },
+    paste = {
+        ["+"] = require("vim.ui.clipboard.osc52").paste("+"),
+        ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
+    },
 }
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Highlight when yanking (copying) text",
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+    callback = function()
+        vim.highlight.on_yank()
+    end,
+})

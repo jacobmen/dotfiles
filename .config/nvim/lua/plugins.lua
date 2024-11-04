@@ -372,6 +372,7 @@ return {
     {
         "nvim-telescope/telescope.nvim",
         branch = "0.1.x",
+        event = "VimEnter",
         dependencies = {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons",
@@ -736,17 +737,6 @@ return {
         },
     },
     {
-        "ibhagwan/smartyank.nvim",
-        opts = {
-            highlight = {
-                timeout = 200,
-            },
-            clipboard = {
-                enabled = false,
-            },
-        },
-    },
-    {
         "j-hui/fidget.nvim",
         opts = {},
     },
@@ -773,37 +763,6 @@ return {
     },
     -- highlight search until done
     "romainl/vim-cool",
-    {
-        "ThePrimeagen/harpoon",
-        branch = "harpoon2",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope.nvim",
-        },
-        config = function()
-            local harpoon = require("harpoon")
-            harpoon:setup()
-
-            vim.keymap.set("n", "<leader>hx", function()
-                harpoon:list():append()
-            end, { desc = "Add to harpoon list" })
-            vim.keymap.set("n", "<leader>hX", function()
-                harpoon:list():remove()
-            end, { desc = "Remove from harpoon list" })
-            vim.keymap.set("n", "<leader>hM", function()
-                harpoon:list():clear()
-            end, { desc = "Clear harpoon list" })
-
-            vim.keymap.set("n", "<leader>hn", function()
-                harpoon:list():next()
-            end, { desc = "Next harpoon entry" })
-            vim.keymap.set("n", "<leader>hp", function()
-                harpoon:list():prev()
-            end, { desc = "Previous harpoon entry" })
-
-            vim.keymap.set("n", "<leader>hh", ":Telescope harpoon marks<CR>", { desc = "Open harpoon list" })
-        end,
-    },
     {
         "stevearc/oil.nvim",
         dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -840,4 +799,6 @@ return {
             },
         },
     },
+    -- Auto detect tabs/spaces in project and adjust settings
+    "tpope/vim-sleuth",
 }
