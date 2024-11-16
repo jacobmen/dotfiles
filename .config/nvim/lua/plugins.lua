@@ -70,7 +70,9 @@ return {
         keys = {
             {
                 "<leader>d",
-                ":lua require('neogen').generate()<CR>",
+                function()
+                    require('neogen').generate({})
+                end,
                 mode = "n",
                 noremap = true,
                 silent = true,
@@ -99,71 +101,93 @@ return {
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
-            "williamboman/mason.nvim",
+            { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
             "williamboman/mason-lspconfig.nvim",
+            "WhoIsSethDaniel/mason-tool-installer.nvim",
             "smjonas/inc-rename.nvim",
             "aznhe21/actions-preview.nvim",
             "nvim-telescope/telescope.nvim",
         },
         config = function()
-            require("mason").setup()
+            vim.api.nvim_create_autocmd("LspAttach", {
+                group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
+                callback = function(event)
+                    local actions_preview = require("actions-preview")
+                    local telescope_builtins = require("telescope.builtin")
 
-            local lspconfig = require("lspconfig")
-            local mason_lspconfig = require("mason-lspconfig")
-            local capabilities = require("cmp_nvim_lsp").default_capabilities()
-            local actions_preview = require("actions-preview")
-            local telescope_builtins = require("telescope.builtin")
+                    --Enable completion triggered by <c-x><c-o>
+                    vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = event.buf })
 
-            mason_lspconfig.setup({
-                ensure_installed = {
-                    "clangd",
-                    "lua_ls",
-                    "pyright",
-                    "rust_analyzer",
-                    "texlab",
-                    "ts_ls",
-                },
+                    -- Mappings
+                    local opts = { noremap = true, silent = true, buffer = event.buf }
+
+                    -- See `:help vim.lsp.*` for documentation on any of the below functions
+                    vim.keymap.set("n", "<leader>gd", telescope_builtins.lsp_definitions, opts)
+                    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+                    vim.keymap.set("n", "<leader>gi", telescope_builtins.lsp_implementations, opts)
+                    vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
+                    vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
+                    vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
+                    vim.keymap.set("n", "<leader>wl", function()
+                        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+                    end, opts)
+
+                    vim.keymap.set("n", "<leader>rr", function()
+                        return ":IncRename " .. vim.fn.expand("<cword>")
+                    end, { expr = true })
+
+                    vim.keymap.set({ "n", "v" }, "<leader>ga", actions_preview.code_actions, opts)
+                    vim.keymap.set("n", "<leader>gr", telescope_builtins.lsp_references, opts)
+
+                    vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
+                    vim.keymap.set("n", "<leader>gN", vim.diagnostic.goto_prev, opts)
+                    vim.keymap.set("n", "<leader>cc", vim.diagnostic.open_float, opts)
+
+                    -- toggle inlay hints if supported
+                    local client = vim.lsp.get_client_by_id(event.data.client_id)
+                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                        vim.keymap.set("n", "<leader>h", function()
+                            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
+                        end, opts)
+                    end
+                end,
             })
 
-            mason_lspconfig.setup_handlers({
-                -- default handler
-                function(server_name)
-                    lspconfig[server_name].setup({
-                        on_attach = function(client, bufnr)
-                            --Enable completion triggered by <c-x><c-o>
-                            vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = bufnr })
+            local capabilities = vim.lsp.protocol.make_client_capabilities()
+            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-                            -- Mappings.
-                            local opts = { noremap = true, silent = true, buffer = bufnr }
+            local servers = {
+                clangd = {},
+                lua_ls = {},
+                pyright = {},
+                rust_analyzer = {},
+                texlab = {},
+                ts_ls = {},
+            }
 
-                            -- See `:help vim.lsp.*` for documentation on any of the below functions
-                            vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, opts)
-                            vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-                            vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-                            vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
-                            vim.keymap.set("n", "<leader>wa", vim.lsp.buf.add_workspace_folder, opts)
-                            vim.keymap.set("n", "<leader>wr", vim.lsp.buf.remove_workspace_folder, opts)
-                            vim.keymap.set("n", "<leader>wl", function()
-                                print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-                            end, opts)
+            require("mason").setup()
 
-                            vim.keymap.set("n", "<leader>rr", function()
-                                return ":IncRename " .. vim.fn.expand("<cword>")
-                            end, { expr = true })
+            local ensure_installed = vim.tbl_keys(servers or {})
+            vim.list_extend(ensure_installed, {
+                "stylua",
+                "hadolint",
+                "markdownlint",
+                "yamllint",
+                "checkmake",
+            })
+            require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-                            vim.keymap.set({ "n", "v" }, "<leader>ga", actions_preview.code_actions, opts)
-                            vim.keymap.set("n", "<leader>gr", telescope_builtins.lsp_references, opts)
-                            vim.keymap.set("n", "<leader>f", function()
-                                vim.lsp.buf.format({ async = true })
-                            end, opts)
-
-                            vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
-                            vim.keymap.set("n", "<leader>gN", vim.diagnostic.goto_prev, opts)
-                            vim.keymap.set("n", "<leader>cc", vim.diagnostic.open_float, opts)
-                        end,
-                        capabilities = server_name == "clangd" and { offsetEncoding = "utf-8" } or capabilities,
-                    })
-                end,
+            require("mason-lspconfig").setup({
+                handlers = {
+                    function(server_name)
+                        local server = servers[server_name] or {}
+                        -- This handles overriding only values explicitly passed
+                        -- by the server configuration above. Useful when disabling
+                        -- certain features of an LSP (for example, turning off formatting for ts_ls)
+                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+                        require("lspconfig")[server_name].setup(server)
+                    end,
+                },
             })
 
             local signs = {
@@ -172,11 +196,36 @@ return {
                 Hint = diag_signs.hint,
                 Info = diag_signs.info,
             }
+
             for type, icon in pairs(signs) do
                 local hl = "DiagnosticSign" .. type
-                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
+                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
             end
         end,
+    },
+    {
+        "stevearc/conform.nvim",
+        event = { "BufWritePre" },
+        cmd = { "ConformInfo" },
+        keys = {
+            {
+                "<leader>f",
+                function()
+                    require("conform").format({ async = true, lsp_format = "fallback" })
+                end,
+                mode = "",
+                desc = "[F]ormat buffer",
+            },
+        },
+        opts = {
+            formatters_by_ft = {
+                lua = { "stylua" },
+                rust = { "rustfmt", lsp_format = "fallback" },
+            },
+            format_on_save = nil,
+            notify_on_error = true,
+            notify_no_formatters = true,
+        },
     },
     {
         "hrsh7th/nvim-cmp",
@@ -188,7 +237,11 @@ return {
             -- source for command line
             "hrsh7th/cmp-cmdline",
             -- snippet engine
-            "L3MON4D3/LuaSnip",
+            {
+                "L3MON4D3/LuaSnip",
+                version = "v2.*",
+                build = "make install_jsregexp",
+            },
             -- for autocompletion
             "saadparwaiz1/cmp_luasnip",
             -- useful snippets
@@ -250,6 +303,11 @@ return {
                     ["<CR>"] = cmp.mapping.confirm({ select = true }),
                 },
                 sources = cmp.config.sources({
+                    {
+                        name = "lazydev",
+                        -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
+                        group_index = 0,
+                    },
                     { name = "nvim_lsp" },
                     { name = "luasnip" },
                     { name = "path" },
@@ -377,7 +435,6 @@ return {
             "nvim-lua/plenary.nvim",
             "nvim-tree/nvim-web-devicons",
             "debugloop/telescope-undo.nvim",
-            "ThePrimeagen/harpoon",
             "folke/trouble.nvim",
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
@@ -440,7 +497,6 @@ return {
 
             telescope.load_extension("fzf")
             telescope.load_extension("undo")
-            telescope.load_extension("harpoon")
 
             -- Adds line numbers to preview buffers
             vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
@@ -628,49 +684,8 @@ return {
         },
     },
     {
-        "nvimtools/none-ls.nvim",
-        event = { "BufReadPre", "BufNewFile" },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "williamboman/mason.nvim",
-            "jay-babu/mason-null-ls.nvim",
-            "gbprod/none-ls-shellcheck.nvim",
-        },
-        config = function()
-            -- TODO: replace null-ls https://www.youtube.com/watch?v=ybUE4D80XSk
-            local null_ls = require("null-ls")
-
-            local code_actions = null_ls.builtins.code_actions
-            local formatting = null_ls.builtins.formatting
-            local diagnostics = null_ls.builtins.diagnostics
-
-            null_ls.setup({
-                sources = {
-                    code_actions.gitsigns,
-
-                    formatting.stylua,
-                    formatting.black,
-
-                    -- Docker linting
-                    diagnostics.hadolint,
-                    diagnostics.markdownlint,
-                    diagnostics.yamllint,
-                    diagnostics.checkmake,
-                },
-            })
-
-            null_ls.register(require("none-ls-shellcheck.diagnostics"))
-            null_ls.register(require("none-ls-shellcheck.code_actions"))
-
-            require("mason-null-ls").setup({
-                ensure_installed = nil,
-                automatic_installation = true,
-                automatic_setup = false,
-            })
-        end,
-    },
-    {
         "folke/todo-comments.nvim",
+        event = "VimEnter",
         dependencies = "nvim-lua/plenary.nvim",
         opts = {
             signs = false,
