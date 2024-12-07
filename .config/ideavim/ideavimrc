@@ -1,0 +1,34 @@
+set relativenumber
+set nu
+
+set incsearch
+
+set nowrap
+set ignorecase
+set smartcase
+
+set scrolloff=8
+
+let mapleader = " "
+
+" don't yank to default register when changing text
+nnoremap c "xc
+xnoremap c "xc
+
+" center screen when jumping to next match
+nnoremap n nzz
+nnoremap N Nzz
+vnoremap n nzz
+vnoremap N Nzz
+
+map <leader>gd <Action>(GotoDeclaration)
+map <leader>gr <Action>(FindUsages)
+map <leader>rr <Action>(RenameElement)
+map <leader>ga <Action>(ShowIntentionActions)
+map <leader>K <Action>(QuickJavaDoc)
+map <leader>f <Action>(ReformatCode)
+
+map <leader>f <Action>(CommentByLineComment)
+
+map <c-f> <Action>(SearchEverywhere)
+map <c-p> <Action>(GotoFile)
