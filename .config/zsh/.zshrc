@@ -29,6 +29,8 @@ source $ZDOTDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 source $ZDOTDIR/.fzf.zsh
 # Override default preview options after sourcing fzf
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_OPTS="--preview='bat --color=always {}' --height=100% --bind shift-up:preview-page-up,shift-down:preview-page-down"
 
 source $ZDOTDIR/LS_COLORS/lscolors.sh
