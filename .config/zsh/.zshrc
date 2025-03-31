@@ -16,9 +16,14 @@ zstyle :prompt:pure:path color cyan
 autoload -U promptinit; promptinit
 prompt pure
 
+# Make cd push the old directory onto the directory stack
 setopt AUTO_PUSHD
+# Don’t push multiple copies of the same directory onto the directory stack
 setopt PUSHD_IGNORE_DUPS
+# Do not print the directory stack after pushd or popd
 setopt PUSHD_SILENT
+# Append commands to the history file right away, rather than waiting for shell to exit
+setopt INC_APPEND_HISTORY
 
 # C-e and C-a in insert mode
 bindkey -e
