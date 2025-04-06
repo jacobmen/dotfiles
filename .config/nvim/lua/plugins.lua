@@ -71,7 +71,7 @@ return {
             {
                 "<leader>d",
                 function()
-                    require('neogen').generate({})
+                    require("neogen").generate({})
                 end,
                 mode = "n",
                 noremap = true,
@@ -117,6 +117,8 @@ return {
 
                     --Enable completion triggered by <c-x><c-o>
                     vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", { buf = event.buf })
+                    -- Enable virtual text
+                    vim.diagnostic.config({ virtual_text = true })
 
                     -- Mappings
                     local opts = { noremap = true, silent = true, buffer = event.buf }
@@ -139,13 +141,21 @@ return {
                     vim.keymap.set({ "n", "v" }, "<leader>ga", actions_preview.code_actions, opts)
                     vim.keymap.set("n", "<leader>gr", telescope_builtins.lsp_references, opts)
 
-                    vim.keymap.set("n", "<leader>gn", vim.diagnostic.goto_next, opts)
-                    vim.keymap.set("n", "<leader>gN", vim.diagnostic.goto_prev, opts)
+                    vim.keymap.set("n", "<leader>gn", function()
+                        vim.diagnostic.jump({ count = 1, float = true }) -- next diagnostic
+                    end, opts)
+                    vim.keymap.set("n", "<leader>gN", function()
+                        vim.diagnostic.jump({ count = -1, float = true }) -- previous diagnostic
+                    end, opts)
+
                     vim.keymap.set("n", "<leader>cc", vim.diagnostic.open_float, opts)
 
                     -- toggle inlay hints if supported
                     local client = vim.lsp.get_client_by_id(event.data.client_id)
-                    if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                    if
+                        client
+                        and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf)
+                    then
                         vim.keymap.set("n", "<leader>h", function()
                             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
                         end, opts)
@@ -178,6 +188,8 @@ return {
             require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
             require("mason-lspconfig").setup({
+                ensure_installed = {},
+                automatic_installation = false,
                 handlers = {
                     function(server_name)
                         local server = servers[server_name] or {}
@@ -185,22 +197,31 @@ return {
                         -- by the server configuration above. Useful when disabling
                         -- certain features of an LSP (for example, turning off formatting for ts_ls)
                         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+                        -- TODO: move to built-in LSP: https://neovim.io/doc/user/lsp.html
                         require("lspconfig")[server_name].setup(server)
                     end,
                 },
             })
 
-            local signs = {
-                Error = diag_signs.error,
-                Warn = diag_signs.warn,
-                Hint = diag_signs.hint,
-                Info = diag_signs.info,
-            }
-
-            for type, icon in pairs(signs) do
-                local hl = "DiagnosticSign" .. type
-                vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-            end
+            local severity = vim.diagnostic.severity
+            vim.diagnostic.config({
+                signs = {
+                    text = {
+                        [severity.ERROR] = diag_signs.error,
+                        [severity.WARN] = diag_signs.warn,
+                        [severity.HINT] = diag_signs.hint,
+                        [severity.INFO] = diag_signs.info,
+                    },
+                    linehl = {
+                        [severity.ERROR] = "DiagnosticSignError",
+                        [severity.WARN] = "DiagnosticSignWarn",
+                    },
+                    numhl = {
+                        [severity.ERROR] = "DiagnosticSignError",
+                        [severity.WARN] = "DiagnosticSignWarn",
+                    },
+                },
+            })
         end,
     },
     {
@@ -228,6 +249,7 @@ return {
         },
     },
     {
+        -- TODO: replace with https://github.com/Saghen/blink.cmp
         "hrsh7th/nvim-cmp",
         dependencies = {
             -- source for text in buffer
@@ -357,41 +379,42 @@ return {
         dependencies = {
             -- UI library
             "MunifTanjim/nui.nvim",
-            "rcarriga/nvim-notify",
+            {
+                "rcarriga/nvim-notify",
+                opts = { background_colour = "#000000" },
+            },
             "smjonas/inc-rename.nvim",
         },
-        config = function()
-            require("noice").setup({
-                messages = {
-                    view_search = false,
-                },
-                routes = {
-                    {
-                        filter = {
-                            event = "msg_show",
-                            kind = "",
-                            find = "written",
-                        },
-                        opts = { skip = true },
+        opts = {
+            messages = {
+                view_search = false,
+            },
+            routes = {
+                {
+                    filter = {
+                        event = "msg_show",
+                        kind = "",
+                        find = "written",
                     },
+                    opts = { skip = true },
                 },
-                lsp = {
-                    progress = {
-                        enabled = false,
-                    },
-                    -- override markdown rendering so that cmp and other plugins use Treesitter
-                    override = {
-                        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-                        ["vim.lsp.util.stylize_markdown"] = true,
-                        ["cmp.entry.get_documentation"] = true,
-                    },
+            },
+            lsp = {
+                progress = {
+                    enabled = false,
                 },
-                presets = {
-                    inc_rename = true,
-                    lsp_doc_border = true,
+                -- override markdown rendering so that cmp and other plugins use Treesitter
+                override = {
+                    ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                    ["vim.lsp.util.stylize_markdown"] = true,
+                    ["cmp.entry.get_documentation"] = true,
                 },
-            })
-        end,
+            },
+            presets = {
+                inc_rename = true,
+                lsp_doc_border = true,
+            },
+        },
     },
     {
         "smjonas/inc-rename.nvim",
@@ -598,6 +621,7 @@ return {
         "nvim-lualine/lualine.nvim",
         dependencies = {
             "folke/noice.nvim",
+            "nvim-tree/nvim-web-devicons",
         },
         config = function()
             local noice = require("noice")
@@ -611,7 +635,9 @@ return {
                 sections = {
                     lualine_a = {
                         {
+                            ---@diagnostic disable-next-line: undefined-field
                             noice.api.status.mode.get,
+                            ---@diagnostic disable-next-line: undefined-field
                             cond = noice.api.status.mode.has,
                         },
                     },
@@ -625,7 +651,9 @@ return {
                             path = 1,
                         },
                         {
+                            ---@diagnostic disable-next-line: undefined-field
                             noice.api.status.search.get,
+                            ---@diagnostic disable-next-line: undefined-field
                             cond = noice.api.status.search.has,
                             color = { fg = "#ff9e64" },
                         },
@@ -662,6 +690,8 @@ return {
                     folds = false,
                     emphasis = false,
                 },
+                dim_inactive = false,
+                transparent_mode = false,
             })
             vim.o.background = "dark"
             vim.cmd([[colorscheme gruvbox]])
