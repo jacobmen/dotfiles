@@ -199,8 +199,8 @@ return {
                         -- certain features of an LSP (for example, turning off formatting for ts_ls)
                         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 
-                        -- TODO: move to built-in LSP: https://neovim.io/doc/user/lsp.html
-                        require("lspconfig")[server_name].setup(server)
+                        vim.lsp.enable(server_name)
+                        vim.lsp.config(server_name, server)
                     end,
                 },
             })
@@ -308,7 +308,7 @@ return {
                     nerd_font_variant = "mono",
                 },
                 completion = {
-                    documentation = { auto_show = false },
+                    documentation = { auto_show = true },
                     list = {
                         selection = {
                             preselect = false,
