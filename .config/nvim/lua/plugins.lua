@@ -100,13 +100,13 @@ return {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
             { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
             "williamboman/mason-lspconfig.nvim",
             "WhoIsSethDaniel/mason-tool-installer.nvim",
             "smjonas/inc-rename.nvim",
             "aznhe21/actions-preview.nvim",
             "nvim-telescope/telescope.nvim",
+            "saghen/blink.cmp",
         },
         config = function()
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -164,7 +164,6 @@ return {
             })
 
             local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
             local servers = {
                 clangd = {},
@@ -193,10 +192,13 @@ return {
                 handlers = {
                     function(server_name)
                         local server = servers[server_name] or {}
+
+                        server.capabilities = require("blink.cmp").get_lsp_capabilities(server.capabilities)
                         -- This handles overriding only values explicitly passed
                         -- by the server configuration above. Useful when disabling
                         -- certain features of an LSP (for example, turning off formatting for ts_ls)
                         server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+
                         -- TODO: move to built-in LSP: https://neovim.io/doc/user/lsp.html
                         require("lspconfig")[server_name].setup(server)
                     end,
@@ -249,128 +251,88 @@ return {
         },
     },
     {
-        -- TODO: replace with https://github.com/Saghen/blink.cmp
-        "hrsh7th/nvim-cmp",
+        "saghen/blink.cmp",
         dependencies = {
-            -- source for text in buffer
-            "hrsh7th/cmp-buffer",
-            -- source for file system paths
-            "hrsh7th/cmp-path",
-            -- source for command line
-            "hrsh7th/cmp-cmdline",
             -- snippet engine
             {
                 "L3MON4D3/LuaSnip",
+                dependencies = {
+                    "rafamadriz/friendly-snippets",
+                },
                 version = "v2.*",
                 build = "make install_jsregexp",
             },
-            -- for autocompletion
-            "saadparwaiz1/cmp_luasnip",
-            -- useful snippets
-            "rafamadriz/friendly-snippets",
-            -- vs-code like pictograms
-            "onsails/lspkind.nvim",
         },
+        -- use a release tag to download pre-built binaries
+        version = "1.*",
+        opts_extend = { "sources.default" },
         config = function()
-            local cmp = require("cmp")
-            local luasnip = require("luasnip")
-            local lspkind = require("lspkind")
-
             local has_words_before = function()
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
                 return col ~= 0
                     and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
-            -- loads vscode style snippets from installed plugins
             require("luasnip.loaders.from_vscode").lazy_load()
 
-            cmp.setup({
-                completion = {
-                    completeopt = "menu,menuone,preview,noselect",
-                },
-                snippet = {
-                    expand = function(args)
-                        luasnip.lsp_expand(args.body)
-                    end,
-                },
-                mapping = {
-                    ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-                    ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-                    ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-                    ["<C-e>"] = cmp.mapping({
-                        i = cmp.mapping.abort(),
-                        c = cmp.mapping.close(),
-                    }),
-                    ["<Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_next_item()
-                        elseif luasnip.expand_or_jumpable() then
-                            luasnip.expand_or_jump()
-                        elseif has_words_before() then
-                            cmp.complete()
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if cmp.visible() then
-                            cmp.select_prev_item()
-                        elseif luasnip.jumpable(-1) then
-                            luasnip.jump(-1)
-                        else
-                            fallback()
-                        end
-                    end, { "i", "s" }),
-                    ["<CR>"] = cmp.mapping.confirm({ select = true }),
-                },
-                sources = cmp.config.sources({
-                    {
-                        name = "lazydev",
-                        -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
-                        group_index = 0,
+            local blink = require("blink-cmp")
+            blink.setup({
+                -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+                -- 'super-tab' for mappings similar to vscode (tab to accept)
+                -- 'enter' for enter to accept
+                -- 'none' for no mappings
+                --
+                -- All presets have the following mappings:
+                -- C-space: Open menu or open docs if already open
+                -- C-n/C-p or Up/Down: Select next/previous item
+                -- C-e: Hide menu
+                -- C-k: Toggle signature help (if signature.enabled = true)
+                keymap = {
+                    preset = "none",
+                    -- If completion hasn't been triggered yet, insert the first suggestion; if it has, cycle to the next suggestion.
+                    ["<Tab>"] = {
+                        function(cmp)
+                            if has_words_before() then
+                                return cmp.insert_next()
+                            end
+                        end,
+                        "fallback",
                     },
-                    { name = "nvim_lsp" },
-                    { name = "luasnip" },
-                    { name = "path" },
-                    { name = "buffer" },
-                }),
-                ---@diagnostic disable-next-line: missing-fields
-                formatting = {
-                    format = lspkind.cmp_format({
-                        mode = "symbol",
-                        maxwidth = 50,
-                        ellipsis_char = "...",
-                    }),
+                    -- Navigate to the previous suggestion or cancel completion if currently on the first one.
+                    ["<S-Tab>"] = { "insert_prev" },
+                    ["<C-e>"] = { "hide", "fallback" },
+                    ["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+                    ["<CR>"] = { "accept", "fallback" },
                 },
-                ---@diagnostic disable-next-line: missing-fields
-                performance = {
-                    debounce = 0,
-                    throttle = 0,
+                appearance = {
+                    nerd_font_variant = "mono",
                 },
-            })
-
-            cmp.setup.cmdline({ "/", "?" }, {
-                mapping = cmp.mapping.preset.cmdline(),
+                completion = {
+                    documentation = { auto_show = false },
+                    list = {
+                        selection = {
+                            preselect = false,
+                        },
+                        cycle = {
+                            from_top = false,
+                        },
+                    },
+                },
+                snippets = {
+                    preset = "luasnip",
+                },
                 sources = {
-                    { name = "buffer" },
+                    default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+                    providers = {
+                        lazydev = {
+                            name = "LazyDev",
+                            module = "lazydev.integrations.blink",
+                            -- make lazydev completions top priority (see `:h blink.cmp`)
+                            score_offset = 100,
+                        },
+                    },
                 },
             })
-
-            cmp.setup.cmdline(":", {
-                mapping = cmp.mapping.preset.cmdline(),
-                sources = cmp.config.sources({
-                    { name = "path" },
-                }, {
-                    { name = "cmdline" },
-                }),
-            })
-
-            local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-
-            cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
-            vim.cmd([[highlight! default link CmpItemKind CmpItemMenuDefault]])
         end,
     },
     {
@@ -442,13 +404,6 @@ return {
                 },
             })
         end,
-    },
-    {
-        "L3MON4D3/LuaSnip",
-        dependencies = {
-            "saadparwaiz1/cmp_luasnip",
-            "rafamadriz/friendly-snippets",
-        },
     },
     {
         "nvim-telescope/telescope.nvim",
@@ -786,6 +741,7 @@ return {
         opts = {},
     },
     {
+        -- highlight words under cursor
         "RRethy/vim-illuminate",
         config = function()
             require("illuminate").configure({
