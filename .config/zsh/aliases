@@ -39,6 +39,6 @@ alias rm='rm -i'
 
 # other
 alias lg='lazygit'
-alias wthr='curl wttr.in'
+alias y='yazi'
 alias config="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 alias shell_benchmark='for i in $(seq 1 10); do time $SHELL -i -c exit; done'
