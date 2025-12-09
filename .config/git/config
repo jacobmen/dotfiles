@@ -43,7 +43,7 @@
     missingCommitsCheck = warn
 
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 
 [diff]
     colorMoved = default
@@ -55,3 +55,6 @@
 [gc]
     reflogExpire = 200
     reflogExpireUnreachable = 90
+
+[rerere]
+	enabled = true
