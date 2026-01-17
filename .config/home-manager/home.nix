@@ -1,10 +1,14 @@
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "jacob";
-  home.homeDirectory = "/home/jacob";
+  home.username = "jdm";
+  home.homeDirectory = "/home/jdm";
+
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -19,7 +23,30 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  news.display = "silent";
+
   home.packages = with pkgs; [
+    # Dev tools
+    bat
+    delta
+    fd
+    fzf
     git
+    neovim
+    rclone
+    ripgrep
+    ruby
+    tmux
+    yazi
+    zathura
+    zsh
+
+    # System monitoring
+    btop # comprehensive
+    atop # niche (irq, etc)
+    iftop # network bandwidth
+    iotop # disk IO
+    nvtopPackages.full # GPU
+    wavemon # wi-fi signal
   ];
 }

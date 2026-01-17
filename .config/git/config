@@ -1,9 +1,13 @@
 [user]
     email = 40839083+jacobmen@users.noreply.github.com
     name = jacobmen
+    signingkey = /home/jdm/.ssh/id_ed25519.pub
 
 [credential]
     helper = cache --timeout=36000000
+
+[gpg]
+    format = ssh
 
 [core]
     pager = delta
