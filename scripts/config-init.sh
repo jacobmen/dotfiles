@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
-git clone --bare https://github.com/jacobmen/dotfiles.git "$HOME/.dotfiles"
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+git clone --bare git@github.com:jacobmen/dotfiles.git "$HOME/.dotfiles"
+git clone git@github.com:tmux-plugins/tpm.git ~/.tmux/plugins/tpm
 
 function config {
    git --git-dir="$HOME/.dotfiles/" --work-tree="$HOME" "$@"
@@ -21,11 +21,3 @@ config config status.showUntrackedFiles no
 config submodule init
 config submodule update
 
-# Install fzf binary only. Config files already exist
-"$HOME"/.fzf/install --bin --no-key-bindings --no-completion --no-update-rc
-
-# Install ugit / git undo
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Bhupesh-V/ugit/master/install)"
-
-# Install zoxide
-curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash

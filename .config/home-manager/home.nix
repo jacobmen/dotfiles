@@ -32,13 +32,16 @@
     fd
     fzf
     git
+    lazygit
     neovim
     rclone
     ripgrep
     ruby
     tmux
+    ugit
     yazi
     zathura
+    zoxide
     zsh
 
     # System monitoring
