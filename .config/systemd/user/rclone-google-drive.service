@@ -7,10 +7,11 @@ Wants=network-online.target
 Type=notify
 ExecStart=/home/jdm/.nix-profile/bin/rclone mount google-drive: /home/jdm/google-drive \
   --config /home/jdm/.config/rclone/rclone.conf \
-  --vfs-cache-mode writes \
+  --vfs-cache-mode full \
   --vfs-cache-max-age 24h \
   --vfs-cache-max-size 10G \
-  --bwlimit-file 10M \
+  --buffer-size 64M \
+  --bwlimit-file 20M \
   --log-level INFO \
   --log-file /tmp/rclone-google-drive.log
 ExecStop=/bin/fusermount -u /home/jdm/google-drive
