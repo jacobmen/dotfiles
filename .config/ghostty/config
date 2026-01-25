@@ -15,4 +15,9 @@ theme = Gruvbox Dark
 # Disable ligatures
 font-feature = -calt
 
-gtk-titlebar = false
+maximize = true
+title = " "
+
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
