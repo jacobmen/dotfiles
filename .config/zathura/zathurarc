@@ -1,2 +1,6 @@
 # Dark mode default
 set recolor true
+
+set selection-clipboard clipboard
+
+set adjust-open best-fit
