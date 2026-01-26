@@ -25,6 +25,9 @@
 
   news.display = "silent";
 
+  # Allow system to discover fonts installed by home-manager
+  fonts.fontconfig.enable = true;
+
   home.packages = with pkgs; [
     # Dev tools
     bat
