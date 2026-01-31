@@ -46,6 +46,7 @@
     zathura
     zoxide
     zsh
+    zsh-fzf-tab
 
     # System monitoring
     btop # comprehensive
