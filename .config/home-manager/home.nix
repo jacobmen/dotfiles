@@ -48,7 +48,9 @@
 
     pure-prompt
     zsh
+    zsh-autosuggestions
     zsh-fzf-tab
+    zsh-syntax-highlighting
 
     # System monitoring
     btop # comprehensive

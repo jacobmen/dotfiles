@@ -48,9 +48,10 @@ zstyle ':fzf-tab:*' switch-group '<' '>'
 # use tmux pop up window for selection
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
 
+source ~/.nix-profile/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.nix-profile/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 source $ZDOTDIR/aliases
-source $ZDOTDIR/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $ZDOTDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 source $ZDOTDIR/.fzf.zsh
 # Override default preview options after sourcing fzf
