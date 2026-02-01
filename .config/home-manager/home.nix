@@ -45,6 +45,8 @@
     yazi
     zathura
     zoxide
+
+    pure-prompt
     zsh
     zsh-fzf-tab
 
