@@ -19,3 +19,9 @@ nix store diff-closures ~/.nix-profile ./result
 home-manager expire-generations "-1 days"
 nix-store --gc
 ```
+
+# Running package without installing
+
+```sh
+nix run --inputs-from . nixpkgs#<pkg-name> -- <pkg-args>
+```

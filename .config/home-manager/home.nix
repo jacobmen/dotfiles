@@ -1,6 +1,9 @@
-{ inputs, config, pkgs, ... }:
-
 {
+  inputs,
+  config,
+  pkgs,
+  ...
+}: {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home.username = "jdm";
@@ -36,16 +39,30 @@
     fzf
     git
     lazygit
-    neovim
     rclone
     ripgrep
     ruby
+    texliveMedium
     tmux
     ugit
     yazi
     zathura
     zoxide
 
+    # Formatters
+    alejandra
+    stylua
+    tex-fmt
+
+    # LSPs
+    lua-language-server
+    nixd
+
+    # Neovim
+    neovim
+    tree-sitter
+
+    # Shell
     pure-prompt
     zsh
     zsh-autosuggestions

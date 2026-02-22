@@ -31,6 +31,8 @@ vim.opt.splitbelow = true
 vim.opt.spell = true
 vim.opt.spelllang = { "en_us" }
 
+vim.o.winborder = "rounded"
+
 -- disable mouse clicking and scrolling
 vim.keymap.set("", "<up>", "<nop>", { noremap = true })
 vim.keymap.set("", "<down>", "<nop>", { noremap = true })
@@ -87,19 +89,7 @@ vim.cmd([[
     nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'gj'
 ]])
 
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.uv.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
-        lazypath,
-    })
-end
-vim.opt.rtp:prepend(lazypath)
-require("lazy").setup("plugins")
+require("config.lazy")
 
 vim.cmd([[
     runtime ./autocommands.vim
@@ -118,11 +108,3 @@ vim.g.clipboard = {
         ["*"] = require("vim.ui.clipboard.osc52").paste("*"),
     },
 }
-
-vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking (copying) text",
-    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
-    callback = function()
-        vim.highlight.on_yank()
-    end,
-})
