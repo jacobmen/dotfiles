@@ -1,3 +1,8 @@
+-- <leader>ll to compile
+-- <leader>lk to stop compiling
+-- <leader>lc to clear compilation artifacts
+-- <leader>lv to forward search in PDF
+-- <leader>lt to show table of contents
 return {
     "lervag/vimtex",
     lazy = false,
