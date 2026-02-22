@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
-vim.cmd("set completeopt+=noselect")
+vim.opt.completeopt:append("noselect")
 
 return {
     {
@@ -114,7 +114,6 @@ return {
         dependencies = {
             "L3MON4D3/LuaSnip",
             "aznhe21/actions-preview.nvim",
-            "folke/lazydev.nvim",
             "smjonas/inc-rename.nvim",
         },
         -- use a release tag to download pre-built binaries

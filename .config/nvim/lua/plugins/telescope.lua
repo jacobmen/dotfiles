@@ -96,7 +96,12 @@ return {
             telescope.load_extension("undo")
 
             -- Adds line numbers to preview buffers
-            vim.cmd("autocmd User TelescopePreviewerLoaded setlocal number")
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "TelescopePreviewerLoaded",
+                callback = function()
+                    vim.opt_local.number = true
+                end,
+            })
         end,
     },
 }

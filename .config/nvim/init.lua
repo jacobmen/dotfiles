@@ -59,7 +59,7 @@ vim.opt.colorcolumn = "100"
 vim.cmd.highlight({ "ColorColumn", "ctermbg=0", "guibg=lightgrey" })
 
 -- allow for LSP diagnostics and git signs to exist side by side
-vim.cmd("set signcolumn=auto:2")
+vim.opt.signcolumn = "auto:2"
 
 -- Easier split movement
 vim.keymap.set("", "<C-h>", "<C-w>h")
@@ -82,18 +82,17 @@ vim.keymap.set("i", "<C-c>", "<esc>")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
--- Include relative jumps in jumplist for <C-o>
--- TODO: convert to lua commands
-vim.cmd([[
-    nnoremap <expr> k (v:count > 1 ? "m'" . v:count : '') . 'gk'
-    nnoremap <expr> j (v:count > 1 ? "m'" . v:count : '') . 'gj'
-]])
+-- Include relative jumps in jump list for <C-o>/<C-i>
+vim.keymap.set("n", "k", function()
+    return (vim.v.count > 1 and "m'" .. vim.v.count or "") .. "gk"
+end, { expr = true, silent = true })
+
+vim.keymap.set("n", "j", function()
+    return (vim.v.count > 1 and "m'" .. vim.v.count or "") .. "gj"
+end, { expr = true, silent = true })
 
 require("config.lazy")
-
-vim.cmd([[
-    runtime ./autocommands.vim
-]])
+require("config.autocommands")
 
 vim.g.do_filetype_lua = 1
 
