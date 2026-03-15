@@ -72,6 +72,9 @@
     biber
     texliveMedium
 
+    # Fonts
+    jetbrains-mono
+
     # System monitoring
     btop # comprehensive
     atop # niche (irq, etc)
