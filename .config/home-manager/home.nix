@@ -42,7 +42,6 @@
     rclone
     ripgrep
     ruby
-    texliveMedium
     tmux
     ugit
     yazi
@@ -68,6 +67,10 @@
     zsh-autosuggestions
     zsh-fzf-tab
     zsh-syntax-highlighting
+
+    # Latex
+    biber
+    texliveMedium
 
     # System monitoring
     btop # comprehensive
