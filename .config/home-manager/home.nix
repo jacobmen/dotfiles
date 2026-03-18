@@ -34,6 +34,7 @@
   home.packages = with pkgs; [
     # Dev tools
     bat
+    comma
     delta
     fd
     fzf

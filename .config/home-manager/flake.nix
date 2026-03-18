@@ -7,11 +7,16 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
     nixpkgs,
     home-manager,
+    nix-index-database,
     ...
   }: let
     system = "x86_64-linux";
@@ -22,7 +27,10 @@
 
       # Specify your home configuration modules here, for example,
       # the path to your home.nix.
-      modules = [./home.nix];
+      modules = [
+        nix-index-database.homeModules.default
+        ./home.nix
+      ];
 
       # Optionally use extraSpecialArgs
       # to pass through arguments to home.nix

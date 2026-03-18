@@ -23,5 +23,5 @@ nix-store --gc
 # Running package without installing
 
 ```sh
-nix run --inputs-from . nixpkgs#<pkg-name> -- <pkg-args>
+, <pkg-name> <pkg-args>
 ```
