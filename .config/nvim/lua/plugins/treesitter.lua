@@ -35,6 +35,7 @@ return {
                 "python",
                 "regex",
                 "rust",
+                "sql",
                 "terraform",
                 "tmux",
                 "toml",
@@ -42,6 +43,7 @@ return {
                 "vim",
                 "vimdoc",
                 "yaml",
+                "zig",
             })
 
             vim.api.nvim_create_autocmd({ "Filetype" }, {

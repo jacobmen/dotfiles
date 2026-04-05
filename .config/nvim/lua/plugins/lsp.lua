@@ -1,6 +1,7 @@
 vim.lsp.enable({
     "lua_ls",
     "nixd",
+    "zls",
 })
 
 vim.api.nvim_create_autocmd("LspAttach", {

@@ -62,3 +62,6 @@
 
 [rerere]
 	enabled = true
+
+[advice]
+    defaultBranchName = false

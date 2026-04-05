@@ -18,6 +18,7 @@ return {
                 lua = { "stylua" },
                 nix = { "alejandra" },
                 tex = { "tex-fmt" },
+                zig = { "zigfmt" },
             },
             default_format_opts = {
                 lsp_format = "fallback",
