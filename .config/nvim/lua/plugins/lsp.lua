@@ -167,8 +167,23 @@ return {
                     preset = "luasnip",
                 },
                 sources = {
-                    default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+                    default = {
+                        "lazydev",
+                        "lsp",
+                        "path",
+                        "snippets",
+                        "buffer",
+                    },
                     providers = {
+                        path = {
+                            opts = {
+                                -- Use CWD rather than buffer's directory
+                                get_cwd = function(_)
+                                    return vim.fn.getcwd()
+                                end,
+                                show_hidden_files_by_default = true,
+                            },
+                        },
                         lazydev = {
                             name = "LazyDev",
                             module = "lazydev.integrations.blink",
