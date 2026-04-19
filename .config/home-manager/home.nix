@@ -57,7 +57,6 @@
     # LSPs
     lua-language-server
     nixd
-    zls
 
     # Neovim
     neovim
@@ -77,8 +76,8 @@
     # Fonts
     jetbrains-mono
 
-    # Zig
-    zig
+    # Rust
+    rustup
 
     # System monitoring
     btop # comprehensive

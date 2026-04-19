@@ -16,6 +16,7 @@ return {
         opts = {
             formatters_by_ft = {
                 lua = { "stylua" },
+                rust = { "rustfmt" },
                 nix = { "alejandra" },
                 tex = { "tex-fmt" },
                 zig = { "zigfmt" },
