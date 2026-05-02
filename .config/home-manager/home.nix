@@ -40,6 +40,7 @@
     fzf
     git
     lazygit
+    pre-commit
     rclone
     ripgrep
     ruby
