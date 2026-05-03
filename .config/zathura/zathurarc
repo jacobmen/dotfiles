@@ -4,3 +4,8 @@ set recolor true
 set selection-clipboard clipboard
 
 set adjust-open best-fit
+
+# Save current location to bookmark called 'save'
+map <C-s> feedkeys ":bmark save<Return>"
+# Jump to bookmark called 'save'
+map S feedkeys ":bjump save<Return>"
