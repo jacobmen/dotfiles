@@ -1,7 +1,9 @@
 return {
     {
         "stevearc/oil.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
         opts = {
             default_file_explorer = true,
             keymaps = {
@@ -24,6 +26,9 @@ return {
             view_options = {
                 show_hidden = true,
             },
+            win_options = {
+                signcolumn = "yes:2",
+            },
         },
         keys = {
             {
@@ -34,5 +39,12 @@ return {
                 silent = true,
             },
         },
+    },
+    {
+        "refractalize/oil-git-status.nvim",
+        dependencies = {
+            "stevearc/oil.nvim",
+        },
+        config = true,
     },
 }
