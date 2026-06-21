@@ -87,6 +87,7 @@
     iotop # disk IO
     nvtopPackages.full # GPU
     wavemon # wi-fi signal
+    wireshark
 
     # Framework
     # sudo $(which framework_tool) --charge-limit [MAX] to update max charge
