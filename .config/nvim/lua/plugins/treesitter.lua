@@ -5,6 +5,24 @@ return {
         lazy = false,
         build = ":TSUpdate",
         config = function()
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "TSUpdate",
+                callback = function()
+                    require("nvim-treesitter.parsers").tmux = {
+                        install_info = {
+                            url = "https://github.com/Freed-Wu/tree-sitter-tmux",
+                            revision = "bd334851188206824595987350c0bfb60ff76f75",
+                            branch = "master",
+                            location = "./",
+                            generate = true,
+                            generate_from_json = false,
+                            queries = "queries",
+                        },
+                        tier = 1,
+                    }
+                end,
+            })
+
             local ts = require("nvim-treesitter")
 
             ts.install({
@@ -46,7 +64,7 @@ return {
                 "zig",
             })
 
-            vim.api.nvim_create_autocmd({ "Filetype" }, {
+            vim.api.nvim_create_autocmd({ "FileType" }, {
                 callback = function(event)
                     local parsers = require("nvim-treesitter.parsers")
                     if not parsers[event.match] then
