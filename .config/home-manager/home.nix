@@ -81,10 +81,11 @@
     rustup
 
     # System monitoring
-    btop # comprehensive
     atop # niche (irq, etc)
+    btop # comprehensive
     iftop # network bandwidth
     iotop # disk IO
+    mtr # network latency
     nvtopPackages.full # GPU
     wavemon # wi-fi signal
 
