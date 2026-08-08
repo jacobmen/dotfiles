@@ -67,6 +67,8 @@ source $ZDOTDIR/LS_COLORS/lscolors.sh
 [ -d "$HOME/.cargo/bin" ] && export PATH="$PATH:$HOME/.cargo/bin"
 # Bob installs of neovim
 [ -d "$HOME/.local/share/bob/nvim-bin" ] && export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+# Bun
+[ -d "$HOME/.bun/bin" ] && export PATH="$HOME/.bun/bin:$PATH"
 
 eval "$(zoxide init zsh)"
 

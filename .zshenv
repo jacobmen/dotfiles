@@ -1,3 +1,6 @@
+# This is the top level env file who's definitions are inherited by sub-shells
+# Use $XDG_CONFIG_HOME/zsh/.zshenv for application specific files
+
 export XDG_CONFIG_HOME="$HOME/.config"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 
