@@ -1,0 +1,40 @@
+modelRoles: 
+  default: openrouter/deepseek/deepseek-v4-flash-0731
+  smol: openrouter/deepseek/deepseek-v4-flash-0731
+  slow: openrouter/deepseek/deepseek-v4-flash-0731:high
+  plan: openrouter/deepseek/deepseek-v4-flash-0731:high
+  designer: openrouter/deepseek/deepseek-v4-flash-0731:high
+  tiny: openrouter/deepseek/deepseek-v4-flash-0731
+  task: openrouter/deepseek/deepseek-v4-flash-0731
+  advisor: openrouter/deepseek/deepseek-v4-flash-0731:high
+symbolPreset: nerd
+theme: 
+  dark: dark-gruvbox
+setupVersion: 1
+defaultThinkingLevel: auto
+statusLine: 
+  compactThinkingLevel: false
+terminal: 
+  showProgress: true
+tui: 
+  tight: true
+advisor: 
+  enabled: true
+  subagents: true
+tools: 
+  approvalMode: write
+memory: 
+  backend: mnemopi
+autolearn: 
+  enabled: true
+readLineNumbers: true
+astGrep: 
+  enabled: true
+checkpoint: 
+  enabled: true
+github: 
+  enabled: true
+browser: 
+  enabled: false
+secrets: 
+  enabled: true
