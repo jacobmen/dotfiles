@@ -1,40 +1,51 @@
-modelRoles: 
-  default: openrouter/deepseek/deepseek-v4-flash-0731
-  smol: openrouter/deepseek/deepseek-v4-flash-0731
-  slow: openrouter/deepseek/deepseek-v4-flash-0731:high
-  plan: openrouter/deepseek/deepseek-v4-flash-0731:high
-  designer: openrouter/deepseek/deepseek-v4-flash-0731:high
-  tiny: openrouter/deepseek/deepseek-v4-flash-0731
-  task: openrouter/deepseek/deepseek-v4-flash-0731
-  advisor: openrouter/deepseek/deepseek-v4-flash-0731:high
+modelRoles:
+  default: openrouter/z-ai/glm-5.3-flash:max
+  smol: openrouter/z-ai/glm-5.3-flash:high
+  slow: openrouter/z-ai/glm-5.3-flash:max
+  plan: openrouter/z-ai/glm-5.3-flash:max
+  designer: openrouter/z-ai/glm-5.3-flash:max
+  tiny: openrouter/z-ai/glm-5.3-flash:high
+  task: openrouter/z-ai/glm-5.3-flash:max
+  advisor: openrouter/z-ai/glm-5.3-flash:max
+  vision: openrouter/z-ai/glm-5.3-flash
 symbolPreset: nerd
-theme: 
+theme:
   dark: dark-gruvbox
-setupVersion: 1
+setupVersion: 2
 defaultThinkingLevel: auto
-statusLine: 
+statusLine:
   compactThinkingLevel: false
-terminal: 
+terminal:
   showProgress: true
-tui: 
+tui:
   tight: true
-advisor: 
+advisor:
   enabled: true
-  subagents: true
-tools: 
+tools:
   approvalMode: write
-memory: 
+memory:
   backend: mnemopi
-autolearn: 
+autolearn:
   enabled: true
 readLineNumbers: true
-astGrep: 
+astGrep:
   enabled: true
-checkpoint: 
+checkpoint:
   enabled: true
-github: 
+github:
   enabled: true
-browser: 
+browser:
   enabled: false
-secrets: 
+secrets:
   enabled: true
+task:
+  agentAdvisor:
+    task: "on"
+composer:
+  shape: box
+security:
+  enabled: true
+display:
+  showTokenUsage: false
+followUpMode: one-at-a-time
+steeringMode: one-at-a-time
