@@ -32,6 +32,18 @@ return {
                 mode = "n",
                 desc = "Search past actions",
             },
+            {
+                "<leader>tb",
+                "<cmd>Telescope buffers<cr>",
+                mode = "n",
+                desc = "Search open buffers",
+            },
+            {
+                "<leader>tg",
+                "<cmd>Telescope git_status<cr>",
+                mode = "n",
+                desc = "Search files appearing in git status",
+            },
         },
         config = function()
             local telescope = require("telescope")
@@ -71,6 +83,7 @@ return {
                         "--line-number",
                         "--column",
                         "--smart-case",
+                        "--trim", -- if search result is indented, remove white-space from the front
                     },
                 },
                 extensions = {
