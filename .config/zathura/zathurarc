@@ -1,9 +1,23 @@
+# Use sqlite for bookmark storage (the plain backend is deprecated)
+set database sqlite
+
+# Remember last position when reopening documents
+set open-first-page false
+
 # Dark mode default
 set recolor true
+# Keep original image colors when recoloring (prevents image inversion)
+set recolor-reverse-video true
 
 set selection-clipboard clipboard
 
 set adjust-open best-fit
+
+# Use ~ instead of full home path in title
+set window-title-home-tilde true
+
+# Incremental search (highlights as you type)
+set incremental-search true
 
 # Save current location to bookmark called 'save'
 map <C-s> feedkeys ":bmark save<Return>"
