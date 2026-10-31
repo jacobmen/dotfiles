@@ -1,0 +1,22 @@
+[Unit]
+Description=RClone Mount Dropbox
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=notify
+ExecStart=/home/jdm/.nix-profile/bin/rclone mount dropbox: /home/jdm/dropbox \
+  --config /home/jdm/.config/rclone/rclone.conf \
+  --vfs-cache-mode full \
+  --vfs-cache-max-age 24h \
+  --vfs-cache-max-size 10G \
+  --buffer-size 64M \
+  --bwlimit-file 20M \
+  --log-level INFO \
+  --log-file /tmp/rclone-dropbox.log
+ExecStop=/bin/fusermount -u /home/jdm/dropbox
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
