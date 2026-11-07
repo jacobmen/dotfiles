@@ -11,7 +11,7 @@ modelRoles:
 symbolPreset: nerd
 theme:
   dark: dark-gruvbox
-setupVersion: 2
+setupVersion: 3
 defaultThinkingLevel: auto
 statusLine:
   compactThinkingLevel: false
@@ -49,3 +49,5 @@ display:
   showTokenUsage: false
 followUpMode: one-at-a-time
 steeringMode: one-at-a-time
+update:
+  auto: false
